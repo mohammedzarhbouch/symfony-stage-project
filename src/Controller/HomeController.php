@@ -7,8 +7,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 
     /**
-     * @Ro
+     *
      */
 {
-
+    public function homepage()
+    {
+        return $this->render('home.html.twig');
+    }
 }
