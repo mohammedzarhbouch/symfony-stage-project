@@ -21,8 +21,8 @@
 <body>
 {# Move the header outside the body block so it shows up on all pages #}
 <header>
-    <a href="#">Home</a>
-    <a href="#">Login</a>
+    <a href="{{ path('home') }}">Home</a>
+    <a href="{{ path('login') }}">Login</a>
 </header>
 
 {% block body %}
