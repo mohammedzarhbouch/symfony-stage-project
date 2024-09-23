@@ -1,0 +1,27 @@
+
+
+.login-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.form-control {
+    display: block;
+        width: 200px;
+        padding: 5px 5px;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: black;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+
+
+}
+
+.submit-button {
+    margin: 10px;
+}
