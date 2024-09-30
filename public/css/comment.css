@@ -37,6 +37,52 @@ margin: 20px;
     margin-left: 15px;
     padding: 5px;
 }
+
+
+
+.comment-form-container {
+    background-color: transparent;
+    width: 60%;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+.comment-submit {
+    float: right;
+
+    border: 1px solid black;
+    margin: 20px;
+    background-color: white;
+    cursor: pointer;
+    outline: none;
+    box-shadow: none;
+
+
+}
+
+
+
+.comment-input {
+    height: 30px;
+    border: none;
+    background-color: transparent;
+    border-bottom: 2px solid black;
+    transition: ease-in-out .2s;
+    color: white;
+    width: 100%;
+
+}
+
+.comment-input:focus {
+    outline: none;
+    border-bottom: 2px solid white;
+    background-color: #000000;
+}
+
+::placeholder {
+    color: white;
+}
+
 .comment-container {
      width: 60%;
      height: 200px;
@@ -65,3 +111,4 @@ margin: 20px;
     height: 100px;
     padding: 5px;
 }
+
