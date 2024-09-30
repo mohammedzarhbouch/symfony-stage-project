@@ -8,7 +8,10 @@
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('css/post.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/myposts.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/comment.css') }}">
 
 
     {% block stylesheets %}
@@ -23,7 +26,13 @@
 {# Move the header outside the body block so it shows up on all pages #}
 <header>
     <a href="{{ path('home') }}">Home</a>
-    <a href="{{ app.user ? 'logout' : 'login'}}">{{ app.user ? 'Logout' : 'Login' }}</a>
+    <a href="{{ app.user ? path('app_logout') : 'login'}}">{{ app.user ? 'Logout' : 'Login' }}</a>
+    <a href="{{ path('app_register') }}">Register</a>
+
+    {% if app.user is not null%}
+    <a href="{{ path('profilepage', { 'id': app.user.id }) }}">Profile</a>
+    {% endif %}
+
 </header>
 
 {% block body %}

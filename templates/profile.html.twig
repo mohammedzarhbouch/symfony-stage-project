@@ -1,0 +1,35 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="profile-form-container">
+        {{ form_start(ProfileFormType) }}
+
+            {{ form_row(ProfileFormType.imageFile) }}
+
+            {{ form_row(ProfileFormType.email, { 'attr': { 'class': 'profile-input' } }) }}
+            {{ form_row(ProfileFormType.username, { 'attr': { 'class': 'profile-input' } }) }}
+
+            {{ form_row(ProfileFormType.plainPassword, {
+                label: 'Password',
+                attr: {'class': 'profile-input'}
+            }) }}
+            {{ form_row(ProfileFormType.submit, { 'attr': { 'class': 'profile-submit-button' } }) }}
+        {{ form_end(ProfileFormType) }}
+
+
+        <div class="profile-picture">
+                {% if app.user.imageFileName is not null %}
+                <img src="{{ asset(app.user.imagePath) }}" alt="Profile Picture">
+                {% else %}
+                <img src="{{ asset('uploads/profile_image/default.jpg') }}" alt="default picture">
+            {% endif %}
+
+
+{#            {{ dump(app.user.imageFileName) }}#}
+
+
+
+
+        </div>
+    </div>
+{% endblock %}

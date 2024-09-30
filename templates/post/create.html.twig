@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+
+
+{% block body %}
+    {{ form_start(PostFormType) }}
+        <div class="post-main">
+            {{ form_row(PostFormType.title) }}
+            {{ form_row(PostFormType.text) }}
+{#            <a>{{ post.date }}</a>#}
+            {{ form_row(PostFormType.submit) }}
+        </div>
+    {{ form_end(PostFormType) }}
+{% endblock %}

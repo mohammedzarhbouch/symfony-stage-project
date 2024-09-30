@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Posts{% endblock %}
+
+{% block body %}
+    <div class="page-title">
+        <h1>Show My Posts</h1>
+    </div>
+
+    <div class="myposts-container">
+        <div class="myposts-main">
+            {% for post in myPosts %}
+
+                <div class="myposts">
+
+                    <div class="myposts-button-container">
+                        <form action="{{ path('delete-post', { 'id': post.id }) }}" method="post">
+                            <button type="submit" class="delete-button">Delete</button>
+                        </form>
+                        <form action="{{ path('edit-post', { 'id': post.id }) }}" method="post">
+                            <button type="submit" class="delete-button">Update</button>
+                        </form>
+                    </div>
+
+{#                    <a>{{ post.id }}</a>#}
+
+
+                    <div class="title-data">{{ post.title }}</div>
+                    <div class="text-data">{{ post.text }}</div>
+
+                    <div class="myposts-footer">
+
+                        <a class="myposts-date">{{ post.date|date("d-m-Y") }}</a>
+                        <div class="postedBy">{{ post.user.username }}</div>
+                    </div>
+                </div>
+            {% else %}
+                <p>No posts available.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

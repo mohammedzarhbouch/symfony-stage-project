@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+<div class="inspect-container">
+    <div class="inspect-post-container">
+    <div class="inspect-post">
+
+        <div class="title-data">{{ post.title }}</div>
+        <div class="text-data">{{ post.text }}</div>
+
+        <div class="myposts-footer">
+
+            <a class="inspect-post-date">{{ post.date|date("d-m-Y") }}</a>
+            <div class="postedBy">{{ post.user.username }}</div>
+        </div>
+
+    </div>
+    </div>
+
+{#    hier komt de comment plaatsen box waar je de comment in gaat typen en kunt plaatsen#}
+
+    <div class="comment-container">
+
+        <div class="comment-data">
+            <div class="comment-username">TESTMAN</div>
+            <div class="comment-date">today</div>
+        </div>
+        <div class="comment-box"> hier komt de comment te staan</div>
+    </div>
+</div>
+{% endblock %}

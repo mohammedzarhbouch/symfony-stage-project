@@ -1,0 +1,88 @@
+
+
+.page-title h1{
+    color: cornflowerblue;
+}
+
+.page-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.myposts-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Change to flex-start to align at the top */
+    flex-wrap: wrap; /* Allow items to wrap to the next row */
+}
+
+.myposts-main {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.myposts {
+    display: flex;
+    flex-direction: column;
+    width: calc(33.33% - 10px);
+    height: 300px;
+    border: 2px solid white;
+    box-sizing: border-box;
+    margin: 5px; /* Adjust margin as needed */
+    position: relative;
+    color: white;
+}
+.myposts-date {
+
+    width: 90px;
+    margin-left: 15px;
+    padding: 5px;
+}
+
+.myposts-button-container {
+    display: flex;
+    box-sizing: border-box;
+    justify-content: center;
+    width: 100%;
+
+
+
+}
+
+
+
+.delete-button {
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    transition: ease-in-out .2s;
+    width: 100%;
+    height: 30px;
+    border: 1px solid black;
+    margin: 5px;
+}
+
+
+.delete-button:hover {
+    background-color: orange;
+}
+
+.myposts-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+
+}
+.postedBy {
+    font-size: 14px;
+    color: lightgray;
+    padding: 5px;
+    text-decoration: underline;
+    margin-right: 15px;
+}
