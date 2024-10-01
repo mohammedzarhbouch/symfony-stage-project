@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "694181450e495a3faa9767047f998467",
+    "content-hash": "bb7191e9e6c147958d7776ef819344bb",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1445,6 +1445,58 @@
                 "source": "https://github.com/doctrine/sql-formatter/tree/1.4.1"
             },
             "time": "2024-08-05T20:32:22+00:00"
+        },
+        {
+            "name": "eschmar/time-ago-bundle",
+            "version": "v2.0.0",
+            "target-dir": "Eschmar/TimeAgoBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eschmar/time-ago-bundle.git",
+                "reference": "ca9332e20dd59951422b43c02d0d22757a68ea08"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eschmar/time-ago-bundle/zipball/ca9332e20dd59951422b43c02d0d22757a68ea08",
+                "reference": "ca9332e20dd59951422b43c02d0d22757a68ea08",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0",
+                "symfony/flex": "*",
+                "twig/twig": "^3.0.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Eschmar\\TimeAgoBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marcel Eschmann",
+                    "homepage": "https://github.com/eschmar",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Provides a simple twig filter for expressing time difference in words.",
+            "homepage": "https://github.com/eschmar/time-ago-bundle",
+            "keywords": [
+                "ago",
+                "bundle",
+                "symfony",
+                "time",
+                "twig"
+            ],
+            "support": {
+                "issues": "https://github.com/eschmar/time-ago-bundle/issues",
+                "source": "https://github.com/eschmar/time-ago-bundle/tree/v2.0.0"
+            },
+            "time": "2020-06-04T12:24:24+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -5570,6 +5622,103 @@
                 }
             ],
             "time": "2024-09-20T07:56:40+00:00"
+        },
+        {
+            "name": "symfony/translation",
+            "version": "v5.4.44",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/translation.git",
+                "reference": "6fed3a20b5b87ee9cdd9dacf545922b8fd475921"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/6fed3a20b5b87ee9cdd9dacf545922b8fd475921",
+                "reference": "6fed3a20b5b87ee9cdd9dacf545922b8fd475921",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/deprecation-contracts": "^2.1|^3",
+                "symfony/polyfill-mbstring": "~1.0",
+                "symfony/polyfill-php80": "^1.16",
+                "symfony/translation-contracts": "^2.3"
+            },
+            "conflict": {
+                "symfony/config": "<4.4",
+                "symfony/console": "<5.3",
+                "symfony/dependency-injection": "<5.0",
+                "symfony/http-kernel": "<5.0",
+                "symfony/twig-bundle": "<5.0",
+                "symfony/yaml": "<4.4"
+            },
+            "provide": {
+                "symfony/translation-implementation": "2.3"
+            },
+            "require-dev": {
+                "psr/log": "^1|^2|^3",
+                "symfony/config": "^4.4|^5.0|^6.0",
+                "symfony/console": "^5.4|^6.0",
+                "symfony/dependency-injection": "^5.0|^6.0",
+                "symfony/finder": "^4.4|^5.0|^6.0",
+                "symfony/http-client-contracts": "^1.1|^2.0|^3.0",
+                "symfony/http-kernel": "^5.0|^6.0",
+                "symfony/intl": "^4.4|^5.0|^6.0",
+                "symfony/polyfill-intl-icu": "^1.21",
+                "symfony/service-contracts": "^1.1.2|^2|^3",
+                "symfony/yaml": "^4.4|^5.0|^6.0"
+            },
+            "suggest": {
+                "psr/log-implementation": "To use logging capability in translator",
+                "symfony/config": "",
+                "symfony/yaml": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "Resources/functions.php"
+                ],
+                "psr-4": {
+                    "Symfony\\Component\\Translation\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Provides tools to internationalize your application",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/translation/tree/v5.4.44"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2024-09-15T08:12:35+00:00"
         },
         {
             "name": "symfony/translation-contracts",

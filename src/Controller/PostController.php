@@ -3,8 +3,10 @@
 //declare(strict_types=1);
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Posts;
 use App\Form\PostFormType;
+use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\AbstractType;
@@ -37,9 +39,13 @@ class PostController extends AbstractController
 
             $entityManager->persist($post);
             $entityManager->flush();
+
+            return $this->redirectToRoute('home');
         }
 
-        return $this->render('home/home.html.twig',[
+
+        return $this->render('post/create.html.twig',[
+
             "PostFormType" => $formPost->createView()] );
 
     }
@@ -51,6 +57,12 @@ class PostController extends AbstractController
     public function deletePost(int $id, EntityManagerInterface $entityManager): Response
     {
         $post = $entityManager->getRepository(Posts::class)->find($id);
+
+        $comments = $entityManager->getRepository(comment::class)->findBy(['post' => $post]);
+
+        foreach ($comments as $comment) {
+            $entityManager->remove($comment);
+        }
 
         $entityManager->remove($post);
         $entityManager->flush();
@@ -95,21 +107,23 @@ class PostController extends AbstractController
 
 
 
-        // FUNCTION 4 (INSPECT)
+        // FUNCTION 4 (INSPECT) ALSO RETRIEVES COMMENTS !!!!
 
     /**
      * @Route("/inspect-post/{id}", name="inspect-post")
      */
     public function inspectPost($id, EntityManagerInterface $entityManager): Response
     {
-
-
         $post = $entityManager->getRepository(Posts::class)->find($id);
+
 
         return $this->render('post/inspect.html.twig', [
             'post' => $post,
+
         ]);
     }
+
+
 
 
 }

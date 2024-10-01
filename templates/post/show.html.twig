@@ -24,8 +24,12 @@
 
 {#                    <a>{{ post.id }}</a>#}
 
+                    <a class="inspect-link" href="{{ path('inspect-post', { 'id': post.id}) }}">
 
-                    <div class="title-data">{{ post.title }}</div>
+                        <div class="title-data">{{ post.title }}</div>
+
+                    </a>
+
                     <div class="text-data">{{ post.text }}</div>
 
                     <div class="myposts-footer">

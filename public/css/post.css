@@ -46,9 +46,9 @@
 }
 
 .title-data:hover {
-    background-color: white;
-    color: black;
-    border-bottom: 5px solid blue;
+    background-color: grey;
+    /*color: black;*/
+    border-bottom: 5px solid lightgreen;
 }
 
 .text-data {
@@ -61,13 +61,30 @@
 
 }
 
-.homePostedBy {
-    font-size: 15px;
-        color: lightgray;
 
 
-    text-decoration: underline;
-    position: absolute;
-    left: 60%;
-    top: 200px;
+
+.home-post-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+    margin-bottom: 10px;
+
+
 }
+.homePostedBy {
+    font-size: 14px;
+    color: lightgray;
+    padding: 5px;
+    text-decoration: underline;
+    margin-right: 15px;
+}
+
+.home-post-date {
+    color: white;
+    margin: 5px;
+    margin-left: 10px;
+}
+
+
+

@@ -73,7 +73,7 @@ class ProfileController extends AbstractController
         }
 
 
-        return $this->render('profile.html.twig', [
+        return $this->render('user/profile.html.twig', [
             'ProfileFormType' => $profileForm->createView(),
             'imageUrl' => '/uploads/profile_image/' . $profile->getImageFileName(),
             'profile' => $profile

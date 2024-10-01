@@ -19,23 +19,39 @@
     </div>
     </div>
 
-{#    hier komt de comment plaatsen box waar je de comment in gaat typen en kunt plaatsen#}
+
     <div class="comment-form-container">
 
-            <input class="comment-input" type="text" placeholder="Enter your comment here...">
+        <form action="{{ path('postComment', {'id': post.id}) }}" method="post">
 
-        <button class="comment-submit">Submit</button>
+            <input class="comment-input" name="commentText" placeholder="Enter your comment here..." required autocomplete="off">
+            <button class="comment-submit" type="submit">Submit</button>
+        </form>
+
+
+
+
+{#            <input class="comment-input" type="text" placeholder="Enter your comment here...">#}
+
+{#        <button class="comment-submit">Submit</button>#}
     </div>
 
 
+    {% if post.comments is empty %}
+        <p>No comments yet.</p>
+    {% else %}
+        {% for comment in post.comments|reverse %}
+            <div class="comment-container">
+                <div class="comment-data">
+                    <div class="comment-username">{{ comment.commentAuthor }}</div>
+                    <div class="comment-date">{{ comment.createdAt|ago }}</div>
+                </div>
+                <div class="comment-box">{{ comment.commentText }}</div>
+            </div>
+        {% endfor %}
+    {% endif %}
 
-    <div class="comment-container">
 
-        <div class="comment-data">
-            <div class="comment-username">USERNAME</div>
-            <div class="comment-date">DATUM</div>
-        </div>
-        <div class="comment-box"> hier komt de comment te staan</div>
-    </div>
 </div>
+
 {% endblock %}

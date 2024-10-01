@@ -3,8 +3,10 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #3a3a3a;
+    background-color: rgba(0, 0, 0, 0.80);
 }
+
+
 
 .page-title-home {
     /*background-color: white;*/
@@ -32,14 +34,17 @@ body {
 }
 
 .home-main {
-    width: 50%;
+    width: 70%;
     display: flex;
+    align-items: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
     padding: 10px;
-    justify-content: flex-start;
-    margin-left: 20%;
-    margin-right: 100px;
+    /*justify-content: flex-start;*/
+    margin-left: 200px;
+    /*margin-right: 100px;*/
     /*border: 2px solid black;*/
+
 
 }
 .post-main {

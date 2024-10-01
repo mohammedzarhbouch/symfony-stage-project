@@ -29,13 +29,16 @@ class Posts
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'posts')]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'post')]
     private Collection $comments;
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
     }
+
+
+
 
 
 
@@ -105,7 +108,7 @@ class Posts
     {
         if (!$this->comments->contains($comment)) {
             $this->comments->add($comment);
-            $comment->setPosts($this);
+            $comment->setPost($this);
         }
 
         return $this;
@@ -115,12 +118,16 @@ class Posts
     {
         if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
-            if ($comment->getPosts() === $this) {
-                $comment->setPosts(null);
+            if ($comment->getPost() === $this) {
+                $comment->setPost(null);
             }
         }
 
         return $this;
     }
+
+
+
+
 
 }

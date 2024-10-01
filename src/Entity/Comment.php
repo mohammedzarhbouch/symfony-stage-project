@@ -5,14 +5,10 @@ namespace App\Entity;
 use App\Repository\CommentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Symfony\Bundle\MakerBundle\Tests\tmp\current_project\src\Entity\TimestampableTrait;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
 {
-
-    use TimestampableEntity;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -22,11 +18,14 @@ class Comment
     private ?string $commentAuthor = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $content = null;
+    private ?string $commentText = null;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Posts $posts = null;
+    private ?Posts $post = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
 
     public function getId(): ?int
     {
@@ -45,26 +44,38 @@ class Comment
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getCommentText(): ?string
     {
-        return $this->content;
+        return $this->commentText;
     }
 
-    public function setContent(string $content): static
+    public function setCommentText(string $commentText): static
     {
-        $this->content = $content;
+        $this->commentText = $commentText;
 
         return $this;
     }
 
-    public function getPosts(): ?Posts
+    public function getPost(): ?Posts
     {
-        return $this->posts;
+        return $this->post;
     }
 
-    public function setPosts(?Posts $posts): static
+    public function setPost(?Posts $post): static
     {
-        $this->posts = $posts;
+        $this->post = $post;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

@@ -17,13 +17,15 @@ class HomeController extends AbstractController
     public function homepage(EntityManagerInterface $entityManager): Response
     {
 
-        $user = $this->getUser();
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
         $allPosts = $entityManager->getRepository(Posts::class)->findAll();
-//        dd($testPost);
 
-        return $this->render('home/home.html.twig', [
 
+        return $this->render('user/home.html.twig', [
             "posts" => $allPosts ]);
+
     }
 
 
@@ -33,7 +35,7 @@ class HomeController extends AbstractController
     /**
      * @Route("/show-posts", name="show-posts")
      */
-    public function myPosts(EntityManagerInterface $entityManager): Response
+    public function myPosts(): Response
     {
         $user = $this->getUser();
 

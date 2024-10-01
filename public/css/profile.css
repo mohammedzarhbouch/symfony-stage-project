@@ -42,8 +42,19 @@
 }
 
 .profile-picture {
-    width: 100px;
-    height: 100px;
-    background-color: white;
+    width: 200px;
+    height: 200px;
+    /*background-color: white;*/
     margin-left: 50px;
+    border-radius: 10px; /* Make the image circular */
+    overflow: hidden; /* Hide overflow if the image is too large */
+    display: flex; /* Center image */
+    justify-content: center; /* Center horizontally */
+    align-items: center;
+}
+
+.profile-picture img {
+    width: 100%; /* Scale the image to fill the container */
+    height: 100%; /* Maintain aspect ratio */
+    object-fit: cover; /* Cover the container while preserving aspect ratio */
 }
