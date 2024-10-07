@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{#    <div class="mycomments">test</div>#}
+
+
+    {% if myComments is empty %}
+        <p>No comments yet.</p>
+    {% else %}
+        {% for comment in myComments|reverse %}
+            <div class="comment-container">
+                <div class="comment-data">
+                    <div class="comment-username">{{ comment.commentAuthor }}</div>
+                    <div class="comment-date">{{ comment.createdAt|ago }}</div>
+                    <div class="comment-edit">
+                        <form action="{{ path('edit-comments', {'id': comment.id}) }}" method="get">
+                        <button>test</button>
+                        </form>
+
+                        <form action="{{ path('delete-comment', { 'id': comment.id }) }}" method="post">
+                            <button type="submit" class="delete-button">Delete</button>
+                        </form>
+
+                    </div>
+                </div>
+                <div class="comment-box">{{ comment.commentText }}</div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
+{% endblock %}

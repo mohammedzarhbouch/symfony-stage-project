@@ -44,7 +44,31 @@
             <div class="comment-container">
                 <div class="comment-data">
                     <div class="comment-username">{{ comment.commentAuthor }}</div>
-                    <div class="comment-date">{{ comment.createdAt|ago }}</div>
+                    <div class="comment-date">Posted {{ comment.createdAt| ago }}</div>
+
+                    {% if comment.updatedAt is null %}
+
+                    {% else %}
+                        <div class="comment-edit-date">
+                            *edited {{ comment.updatedAt| ago }}*
+                        </div>
+
+                    {% endif %}
+
+                    {% if app.user and app.user.username == comment.commentAuthor %}
+                        <form action="{{ path('edit-post-comments', {'id': comment.id}) }}" method="get">
+                            <button class="edit-comment-button">edit</button>
+                        </form>
+
+                        <form action="{{ path('delete-comment', {'id': comment.id}) }}" method="get">
+                            <button class="edit-comment-button">Delete</button>
+                        </form>
+
+
+
+                    {% endif %}
+
+
                 </div>
                 <div class="comment-box">{{ comment.commentText }}</div>
             </div>

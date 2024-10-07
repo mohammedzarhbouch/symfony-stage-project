@@ -22,14 +22,15 @@ class Posts
     #[ORM\Column(type: Types::TEXT)]
     private ?string $text = null;
 
-    #[ORM\ManyToOne(inversedBy: 'posts')] //
+    #[ORM\ManyToOne(inversedBy: 'posts')] //   USER
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'post')]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'post', cascade: ['remove'])]
+
     private Collection $comments;
 
     public function __construct()

@@ -13,6 +13,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^3.2",
         "eschmar/time-ago-bundle": "v2.0.0",
+        "knplabs/knp-time-bundle": "^2.4",
         "sensio/framework-extra-bundle": "*",
         "stof/doctrine-extensions-bundle": "*",
         "symfony/asset": "5.4.*",

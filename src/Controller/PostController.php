@@ -27,6 +27,8 @@ class PostController extends AbstractController
         $post = new Posts();
         $formPost = $this->createForm(PostFormType::class, $post);
 
+
+
         $formPost->handleRequest($request);
 
         if($formPost->isSubmitted() && $formPost->isValid()) {
@@ -38,6 +40,11 @@ class PostController extends AbstractController
 //            dd($post);
 
             $entityManager->persist($post);
+
+            $user = $this->getUser();
+            $user?->setPostCount($user->getPostCount() + 1);
+
+
             $entityManager->flush();
 
             return $this->redirectToRoute('home');
@@ -59,6 +66,15 @@ class PostController extends AbstractController
         $post = $entityManager->getRepository(Posts::class)->find($id);
 
         $comments = $entityManager->getRepository(comment::class)->findBy(['post' => $post]);
+
+        $user = $post->getUser();
+
+        $post->getUser()->setPostCount($user->getPostCount() - 1);
+
+//        dd($user);
+
+
+
 
         foreach ($comments as $comment) {
             $entityManager->remove($comment);

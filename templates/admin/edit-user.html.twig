@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+
+    {{ form_start(form) }}
+<div class="admin-edit-user-container">
+        {{ form_row(form.email) }}
+        {{ form_row(form.password) }}
+    {#    {{ form_row(EditUserFormType.roles) }}#}
+        {{ form_row(form.username) }}
+        {{ form_row(form.submit) }}
+</div>
+
+    {{ form_end(form) }}
+
+
+
+{% endblock %}

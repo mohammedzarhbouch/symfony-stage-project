@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+
+    {{ form_start(editCommentForm) }}
+
+        {{ form_row(editCommentForm.commentText) }}
+        {{ form_row(editCommentForm.submit) }}
+
+    {{ form_end(editCommentForm) }}
+
+
+{% endblock %}
+

@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+
+<div class="container">
+    <div class="dashboard-container">
+        <div class="filter-button-container">
+            <div class="filter-buttons">
+                <a class="filter-button" href="{{ path('admin', {view: 'users'}) }}">Users</a>
+                <a class="filter-button" href="{{ path('admin', {view: 'posts'}) }}">Posts</a>
+            </div>
+        </div>
+
+
+        {% if users is defined %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Roles</th>
+                <th>test</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.username }}</td>
+                    {% for role in user.roles %}
+                        <td>{{role}}</td>
+                    {% endfor %}
+                    <td>
+                        <div class="row-buttons">
+                            <form action="{{ path('admin_delete_user', { 'id': user.id }) }}" method="post" onsubmit="return confirm('Zeker?');">
+                                <button class="admin-buttons-delete" type="submit" >Delete</button>
+                            </form>
+                            <form action="{{ path('admin_edit_user', {'id': user.id}) }}" method="post">
+                                <button class="admin-buttons-edit" >edit User</button>
+                            </form>
+
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{% endif %}
+
+
+        {% if posts is defined %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>user email</th>
+                    <th>Title</th>
+                    <th>Content</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for post in posts %}
+                    <tr>
+                        <td>{{ post.id }}</td>
+                        <td>{{ post.user.email }}</td>
+                        <td>{{ post.title }}</td>
+                        <td>{{ post.text }}</td>
+                        <td>
+                            <div class="row-buttons">
+                                <form action="{{ path('admin_delete_post', { 'id': post.id }) }}" method="post" onsubmit="return confirm('Zeker?');">
+                                    <button class="admin-buttons-delete"  type="submit" >Delete</button>
+                                </form>
+
+                                <form action="{{ path('admin_edit_post', {'id': post.id}) }}" method="post">
+                                    <button class="admin-buttons-edit" >edit post</button>
+                                </form>
+                            </div>
+
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

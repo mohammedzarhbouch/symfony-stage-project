@@ -40,10 +40,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageFileName = null;
 
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user')]
+    private Collection $comments;
+
+    #[ORM\Column]
+    private ?int $post_count = null;
+
+    #[ORM\Column]
+    private ?int $comment_count = null;
+
 
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -70,7 +81,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -79,7 +90,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->username;
+        return (string)$this->username;
     }
 
     /**
@@ -180,7 +191,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getImagePath(): string
     {
-        return 'uploads/profile_image/'.$this->getImageFileName();
+        return 'uploads/profile_image/' . $this->getImageFileName();
     }
 
     public function setImageFileName(?string $imageFileName): static
@@ -189,4 +200,59 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPostCount(): ?int
+    {
+        return $this->post_count;
+    }
+
+    public function setPostCount(int $post_count): static
+    {
+        $this->post_count = $post_count;
+
+        return $this;
+    }
+
+    public function getCommentCount(): ?int
+    {
+        return $this->comment_count;
+    }
+
+    public function setCommentCount(int $comment_count): static
+    {
+        $this->comment_count = $comment_count;
+
+        return $this;
+    }
+
 }

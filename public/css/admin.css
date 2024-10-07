@@ -1,0 +1,125 @@
+
+
+
+.container {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.dashboard-container {
+    width: auto;
+    height: 800px;
+    /*background-color: red;*/
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*flex-direction: column;*/
+
+    /*margin: 50px 20px 0px 20px;*/
+}
+
+.filter-button-container {
+    width: auto;
+    height: 40px;
+    /*background-color: white;*/
+    display: flex;
+    /*justify-content: center;*/
+    /*margin-top: 40px;*/
+    align-items: center;
+}
+
+.filter-buttons {
+    margin-left: 20px;
+    outline: none;
+
+}
+
+.filter-button {
+    /*display: flex;*/
+    /*justify-content: flex-start;*/
+    /*flex-direction: row;*/
+    background-color: blue;
+    color: white;
+    padding: 5px 15px 5px 15px;
+    height: 20px;
+    transition: ease-in-out .2s;
+    border-radius: 5px;
+    /*width: 150px;*/
+    margin-right: 10px;
+    text-decoration: none;
+    border: 1px solid black;
+
+}
+
+.filter-button:hover {
+    background-color: lightgreen;
+    /*border: 1px solid black;*/
+
+}
+
+table {
+
+    width: 1000px;
+    /*height: 100vh;*/
+    border-collapse: collapse;
+
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    background-color: white;
+    /*border-right: 1px solid black;*/
+    /*border-left: 1px solid black;*/
+    border-bottom: 1px solid black;
+
+}
+
+th {
+    background-color: grey;
+    color: white;
+}
+
+.row-buttons {
+    display: flex;
+
+}
+
+.admin-edit-container {
+    color: white;
+}
+
+.admin-buttons-edit {
+    margin-right: 5px;
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    transition: ease-in-out .2s;
+    width: 80px;
+
+}
+
+.admin-buttons-edit:hover {
+    background-color: lightgreen;
+    color: black;
+}
+
+.admin-buttons-delete {
+    margin-right: 5px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    transition: ease-in-out .2s;
+    width: 80px;
+
+}
+
+.admin-buttons-delete:hover {
+    background-color: orange;
+    color: black;
+}

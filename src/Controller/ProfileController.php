@@ -18,13 +18,15 @@ class ProfileController extends AbstractController
 {
 
     /**
-     * @Route("/profile/{id}", name="profilepage")
+     * @Route("/profile", name="profilepage")
      */
-    public function profilepage(int $id, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function profilepage( Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
 
+        $profile = $this->getUser();
 
-        $profile = $entityManager->getRepository(User::class)->find($id);
+//        $profile = $entityManager->getRepository(User::class)->find($id);
+
         $profileForm = $this->createForm(ProfileFormType::class, $profile);
 
         $profileForm->handleRequest($request);

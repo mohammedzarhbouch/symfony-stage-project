@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="{{ asset('css/myposts.css') }}">
     <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
     <link rel="stylesheet" href="{{ asset('css/comment.css') }}">
-
-
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <script src="{{ asset('js/popup.js') }}"></script>
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
@@ -23,17 +23,27 @@
     {% endblock %}
 </head>
 <body>
-{# Move the header outside the body block so it shows up on all pages #}
+
 <header>
-    <a href="{{ path('home') }}">Home</a>
-    <a href="{{ app.user ? path('app_logout') : 'login'}}">{{ app.user ? 'Logout' : 'Login' }}</a>
-    <a href="{{ path('app_register') }}">Register</a>
+    <div class="header-button-container">
+        <a href="{{ path('home') }}">Home</a>
+        <a href="{{ app.user ? path('app_logout') : 'login'}}">{{ app.user ? 'Logout' : 'Login' }}</a>
 
-    {% if app.user is not null%}
-    <a href="{{ path('profilepage', { 'id': app.user.id }) }}">Profile</a>
+        {% if app.user is not null %}
+            <a href="{{ path('profilepage') }}">Profile</a>
+            {% if 'ROLE_ADMIN' in app.user.roles %}
+                <a href="{{ path('admin') }}"> Admin</a>
+            {% endif %}
+        {% else %}
+            <a href="{{ path('app_register') }}">Register</a>
+        {% endif %}
+    </div>
+
+    {% if app.user is not null %}
+        <div class="welcome-text">Welcome back! {{ app.user.username }}</div>
     {% endif %}
-
 </header>
+
 
 {% block body %}
     {# Content of the child templates will go here #}
