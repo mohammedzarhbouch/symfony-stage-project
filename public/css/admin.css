@@ -53,7 +53,7 @@
 }
 
 .filter-button:hover {
-    background-color: lightgreen;
+    background-color: #5eb5e0;
     /*border: 1px solid black;*/
 
 }
@@ -103,7 +103,7 @@ th {
 }
 
 .admin-buttons-edit:hover {
-    background-color: lightgreen;
+    background-color: #5eb5e0;
     color: black;
 }
 

@@ -1,37 +1,28 @@
 
 
+.followed-post-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
 
-.post-title {
-    color: white;
-    padding: 5px;
 }
 
-.post-content {
-
-    width: 300px;
-    padding: 10px;
-    height: 50px;
-}
-
-.post {
+.followed-post {
     display: flex;
     flex-direction: column;
-    width: 300px;
+    width: 500px;
     height: 250px;
     border: 2px solid white;
     /*margin-right: 50px;*/
     /*margin-left: 50px;*/
-    margin: 5px;
+    margin-top: 50px;
     margin-bottom: 50px;
     position: relative;
-
 }
 
-.inspect-link {
-    text-decoration: none;
-}
 
-.title-data {
+.follow-post-title {
     font-size: 20px;
     color: white;
     margin: 5px 20px 0px 20px;
@@ -41,16 +32,9 @@
     padding-bottom: 10px;
     transition: ease-in-out .2s;
     border-radius: 4px;
-
 }
 
-.title-data:hover {
-    background-color: grey;
-    /*color: black;*/
-    border-bottom: 3px solid lightgreen;
-}
-
-.text-data {
+.follow-post-text {
     font-size: small;
     word-wrap: break-word;
     border-left: 2px solid  grey;
@@ -58,54 +42,24 @@
     padding: 10px;
     color: white;
     height: 100%;
-
 }
 
 
-
-
-.home-post-footer {
+.follow-post-footer {
     display: flex;
     justify-content: space-between;
     margin-top: auto;
-    margin-bottom: 10px;
-
-
 }
-.homePostedBy {
+
+.follow-postedBy {
     font-size: 14px;
     color: lightgray;
     padding: 5px;
     text-decoration: underline;
     margin-right: 15px;
 }
-
-.home-post-date {
+.follow-post-date {
     color: white;
     margin: 5px;
     margin-left: 10px;
 }
-
-
-
-.popup {
-    position: absolute;
-    width: 200px;
-    height: 100px;
-    top: 100px;
-    left: 50px;
-    background-color: rgb(0, 0, 0);
-    color: white;
-    border-radius: 10px;
-    display: flex;
-    justify-content: space-evenly;
-    opacity: 0;
-    align-items: center;
-    transition: ease-in-out .2s;
-}
-
-.post-rating {
-    color: white;
-}
-
-

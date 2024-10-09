@@ -34,7 +34,7 @@ header a {
 }
 
 header a:hover {
-    background-color: lightgreen;
+    background-color: #5eb5e0;
     color: black;
     transition: ease-in-out .2s;
 }

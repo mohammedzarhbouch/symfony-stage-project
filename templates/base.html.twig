@@ -13,7 +13,11 @@
     <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
     <link rel="stylesheet" href="{{ asset('css/comment.css') }}">
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/followList.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/followPost.css') }}">
+
     <script src="{{ asset('js/popup.js') }}"></script>
+
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
@@ -48,5 +52,7 @@
 {% block body %}
     {# Content of the child templates will go here #}
 {% endblock %}
+<script src="{{ asset('js/following.js') }}"></script>
 </body>
+
 </html>

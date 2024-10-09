@@ -15,14 +15,18 @@
 {#    {% endif %}#}
     <div class="page-title-home">
         <h1>USER POSTS</h1>
+
+        {% if alreadyFollowing == 1  %}
+            <a id="following-text">Already following</a>
+        {% endif %}
     </div>
 
     <div class="container">
         <div class="button-container">
-            <a href="{{ path('create-post') }}" class="home-main-buttons">Create Post!</a>
-            <a href="{{ path('show-posts') }}" class="home-main-buttons">Show my posts!</a>
-            <a href="{{ path('show-comments') }}" class="home-main-buttons">Show my Comments!</a>
-            <a href="{{ path('show-comments') }}" class="home-main-buttons"></a>
+            <a href="{{ path('create-post') }}" class="home-main-buttons">Create Post</a>
+            <a href="{{ path('show-posts') }}" class="home-main-buttons">Show my posts</a>
+            <a href="{{ path('show-comments') }}" class="home-main-buttons">Show my Comments</a>
+            <a href="{{ path('follow-list') }}" class="home-main-buttons">Follow List</a>
 
 
         </div>
@@ -34,6 +38,14 @@
                         <div class="title-data">{{ post.title }}</div>
                     </a>
                     <div class="text-data">{{ post.text }}</div>
+
+                    <div class="post-rating">
+                        <input type="checkbox" id="1-star">1
+                        <input type="checkbox" id="2-star">2
+                        <input type="checkbox" id="3-star">3
+                        <input type="checkbox" id="4-star">4
+                        <input type="checkbox" id="5-star">5
+                    </div>
                     <div class="home-post-footer">
 
                         <a class="home-post-date">{{ post.date|date('d-m-Y') }}</a>

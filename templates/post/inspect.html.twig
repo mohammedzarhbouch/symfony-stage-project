@@ -14,6 +14,10 @@
 
             <a class="inspect-post-date">{{ post.date|date("d-m-Y") }}</a>
             <div class="postedBy">{{ post.user.username }}</div>
+
+            <form action="{{ path('follow_user', {'id': post.user.id}) }}" method="POST">
+                <button type="submit">Follow</button>
+            </form>
         </div>
 
     </div>
@@ -31,9 +35,7 @@
 
 
 
-{#            <input class="comment-input" type="text" placeholder="Enter your comment here...">#}
 
-{#        <button class="comment-submit">Submit</button>#}
     </div>
 
 

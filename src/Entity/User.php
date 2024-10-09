@@ -49,11 +49,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $comment_count = null;
 
+    #[ORM\OneToMany(targetEntity: Follow::class, mappedBy: 'followedUserId')]
+    private Collection $followedBy;
+
+    #[ORM\OneToMany(targetEntity: Follow::class, mappedBy: 'followerUserId')]
+    private Collection $following;
+
+    #[ORM\OneToMany(targetEntity: Rating::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $ratings;
+
+
 
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->comments = new ArrayCollection();
+
+        $this->followedBy = new ArrayCollection();
+        $this->following = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
+
+
+
 
     }
 
@@ -254,5 +271,91 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getFollowedBy(): Collection
+    {
+        return $this->followedBy;
+    }
+
+    public function setFollowedBy(Collection $followedBy): void
+    {
+        $this->followedBy = $followedBy;
+    }
+
+    public function getFollowing(): Collection
+    {
+        return $this->following;
+    }
+
+    public function setFollowing(Collection $following): void
+    {
+        $this->following = $following;
+    }
+
+
+    public function addFollowedBy(User $user): static
+    {
+        if (!$this->followedBy->contains($user)) {
+            $this->followedBy->add($user);
+
+        }
+
+        return $this;
+    }
+
+    public function removeFollowedBy(User $user): static
+    {
+        $this->followedBy->removeElement($user);
+        return $this;
+    }
+
+
+    public function addFollowing(User $user): static
+    {
+        if (!$this->following->contains($user)) {
+            $this->following->add($user);
+
+        }
+
+        return $this;
+    }
+
+    public function removeFollowing(User $user): static
+    {
+        $this->following->removeElement($user);
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Rating $rating): static
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings->add($rating);
+            $rating->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Rating $rating): static
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getUser() === $this) {
+                $rating->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 
 }

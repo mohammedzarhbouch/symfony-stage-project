@@ -30,6 +30,7 @@ body {
 
 }
 
+
 .container {
 
     display: flex;
@@ -119,4 +120,17 @@ body {
 }
 
 
-
+#following-text {
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+    text-align: center;
+    width: 200px;
+    margin-left: 50px;
+    border-radius: 10px;
+    border: 2px solid black;
+    opacity: 1;
+    transition: ease-in-out .2s;
+}

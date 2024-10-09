@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+
+    <div class="follow-container">
+            {%  for followed in followedList %}
+
+            <a href="{{ path('followedPosts', {'id': followed.followedUser.id}) }}" class="click">
+                <div class="follow-text">
+                    <span class="following">Username: {{ followed.followedUser.username }}</span>
+                    <span class="following" >Posts: {{ followed.followedUser.postCount }}</span>
+                </div>
+
+                <div class="follow-profile-picture">
+                    {% if app.user.imageFileName is not null %}
+                        <img src="{{ asset(followed.followedUser.imagePath) }}" alt="Profile Picture">
+                    {% else %}
+                        <img src="{{ asset('uploads/profile_image/default.jpg') }}" alt="default picture">
+                    {% endif %}
+                </div>
+
+            </a>
+
+            {%  endfor%}
+
+
+    </div>
+{% endblock %}
