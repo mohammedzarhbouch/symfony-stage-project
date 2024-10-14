@@ -15,8 +15,14 @@
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
     <link rel="stylesheet" href="{{ asset('css/followList.css') }}">
     <link rel="stylesheet" href="{{ asset('css/followPost.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 
     <script src="{{ asset('js/popup.js') }}"></script>
+    <script src="{{ asset('js/rating.js') }}"></script>
+    <script src="{{ asset('js/DynamicRatingUpdate.js') }}"></script>
+    <script src="{{ asset('js/following.js') }}"></script>
+
 
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
@@ -50,9 +56,10 @@
 
 
 {% block body %}
+
     {# Content of the child templates will go here #}
+
 {% endblock %}
-<script src="{{ asset('js/following.js') }}"></script>
 </body>
 
 </html>

@@ -3,6 +3,9 @@
 
 {% block body %}
 
+    
+
+
 <div class="inspect-container">
     <div class="inspect-post-container">
     <div class="inspect-post">
@@ -10,14 +13,20 @@
         <div class="title-data">{{ post.title }}</div>
         <div class="text-data">{{ post.text }}</div>
 
+        <form action="{{ path('follow_user', {'id': post.user.id}) }}" method="POST">
+            <button type="submit">Follow</button>
+        </form>
+
+
+
+        <div class="inspect-rating">test</div>
+
         <div class="myposts-footer">
 
             <a class="inspect-post-date">{{ post.date|date("d-m-Y") }}</a>
             <div class="postedBy">{{ post.user.username }}</div>
 
-            <form action="{{ path('follow_user', {'id': post.user.id}) }}" method="POST">
-                <button type="submit">Follow</button>
-            </form>
+
         </div>
 
     </div>

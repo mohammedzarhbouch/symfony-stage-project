@@ -17,7 +17,7 @@
     display: flex;
     flex-direction: column;
     width: 300px;
-    height: 250px;
+    height: 350px;
     border: 2px solid white;
     /*margin-right: 50px;*/
     /*margin-left: 50px;*/
@@ -102,10 +102,50 @@
     opacity: 0;
     align-items: center;
     transition: ease-in-out .2s;
+    z-index: -200;
 }
 
-.post-rating {
+
+.ratings {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+
+
+.rating-total {
     color: white;
+    width: 30px;
+}
+
+.rating-button i {
+    color: grey;
+    transition: color 0.2s ease;
+}
+
+.rating-button:hover i,
+.rating-button:focus i {
+    color: orange;
+}
+
+
+.fa-star {
+    font-weight: 900;
+}
+
+.rating-button i.fa-regular:before {
+    content: "\f005"; /* Regular star outline */
+}
+
+.rating-button i.fa-solid:before {
+    content: "\f005"; /* Solid star icon */
+}
+
+
+.rating-text {
+    color: white;
+    text-align: center;
 }
 
 

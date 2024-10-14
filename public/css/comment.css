@@ -24,8 +24,8 @@ margin: 20px;
 .inspect-post {
     display: flex;
     flex-direction: column;
-    width: 400px;
-    height: 300px;
+    width: 500px;
+    height: 400px;
     border: 2px solid white;
     box-sizing: border-box;
     margin: 5px; /* Adjust margin as needed */
@@ -35,7 +35,7 @@ margin: 20px;
 }
 .inspect-post-date {
 
-    width: 90px;
+    width: 120px;
     margin-left: 15px;
     padding: 5px;
 }

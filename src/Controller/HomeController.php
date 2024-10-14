@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Posts;
+use App\Entity\Rating;
 use App\Form\PostFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,18 +19,27 @@ class HomeController extends AbstractController
     public function homepage(Request $request,EntityManagerInterface $entityManager): Response
     {
 //    dd($request->get('alreadyFollowing'));
+
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
         $allPosts = $entityManager->getRepository(Posts::class)->findAll();
 
 
-        return $this->render('user/home.html.twig', [
-            "posts" => $allPosts,
-            'alreadyFollowing' => $request->get('alreadyFollowing')
-        ]);
+        $user = $this->getUser();
+        $userRatings = $entityManager->getRepository(Rating::class)->findBy(['user' => $user]);
 
-    }
+
+
+            return $this->render('user/home.html.twig', [
+                "posts" => $allPosts,
+                'alreadyFollowing' => $request->get('alreadyFollowing'),
+                'userRatings' => $userRatings,
+
+            ]);
+
+        }
+
 
 
 

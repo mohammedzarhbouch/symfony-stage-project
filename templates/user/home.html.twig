@@ -21,12 +21,14 @@
         {% endif %}
     </div>
 
+
     <div class="container">
         <div class="button-container">
             <a href="{{ path('create-post') }}" class="home-main-buttons">Create Post</a>
             <a href="{{ path('show-posts') }}" class="home-main-buttons">Show my posts</a>
             <a href="{{ path('show-comments') }}" class="home-main-buttons">Show my Comments</a>
             <a href="{{ path('follow-list') }}" class="home-main-buttons">Follow List</a>
+{#            <a href="{{ path('saved-ratings') }}" class="home-main-buttons">test</a>#}
 
 
         </div>
@@ -37,15 +39,54 @@
                     <a class="inspect-link" href="{{ path('inspect-post', { 'id': post.id }) }}">
                         <div class="title-data">{{ post.title }}</div>
                     </a>
-                    <div class="text-data">{{ post.text }}</div>
+                    <div class="text-data">{{ post.id }}</div>
+{#                        <div>{{ post.userRating }}</div>#}
 
-                    <div class="post-rating">
-                        <input type="checkbox" id="1-star">1
-                        <input type="checkbox" id="2-star">2
-                        <input type="checkbox" id="3-star">3
-                        <input type="checkbox" id="4-star">4
-                        <input type="checkbox" id="5-star">5
+
+                    {% set userRating = 0 %}
+
+                    {% for rating in userRatings %}
+                        {% if rating.post.id == post.id %}
+
+                            {% set userRating = rating.score %}
+
+                        {% endif %}
+                    {% endfor %}
+
+
+
+
+                <a class="rating-text">Rate this post!</a>
+                    <div class="ratings" data-user-rating="{{ userRating }}">
+                        <div class="rating-button-container">
+                            <a class="rating-button" data-value="1" data-id="{{ post.id }}">
+                                <i class="{{ userRating}} fa-star"></i>
+                            </a>
+                            <a class="rating-button" data-value="2" data-id="{{ post.id }}">
+                                <i class="{{ userRating}} fa-star"></i>
+                            </a>
+                            <a class="rating-button" data-value="3" data-id="{{ post.id }}">
+                                <i class="{{ userRating}} fa-star"></i>
+                            </a>
+                            <a class="rating-button" data-value="4" data-id="{{ post.id }}">
+                                <i class="{{ userRating}} fa-star"></i>
+                            </a>
+                            <a class="rating-button" data-value="5" data-id="{{ post.id }}">
+                                <i class="{{ userRating }} fa-star"></i>
+                            </a>
+                        </div>
+
+
+
+
+
+
                     </div>
+
+
+
+
+
                     <div class="home-post-footer">
 
                         <a class="home-post-date">{{ post.date|date('d-m-Y') }}</a>
@@ -56,10 +97,14 @@
                         <div class="homePostedBy" >{{ post.user.username }}</div>
                     </div>
                 </div>
+
+
+
             {% else %}
                 <p>No posts available.</p>
             {% endfor %}
         </div>
     </div>
+
 
 {% endblock %}

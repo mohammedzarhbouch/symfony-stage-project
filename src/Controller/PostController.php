@@ -26,7 +26,7 @@ class PostController extends AbstractController
     {
         $post = new Posts();
         $formPost = $this->createForm(PostFormType::class, $post);
-
+        
 
 
         $formPost->handleRequest($request);
@@ -36,8 +36,9 @@ class PostController extends AbstractController
 
             $post->setUser($this->getUser());
             $post->setDate(new \DateTime("now", new \DateTimeZone("Europe/Amsterdam")));
+            $post->setAmountOfRatings(0);
+            $post->setTotalRatingScore(0);
 
-//            dd($post);
 
             $entityManager->persist($post);
 

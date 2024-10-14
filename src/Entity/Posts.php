@@ -36,10 +36,25 @@ class Posts
     #[ORM\OneToMany(targetEntity: Rating::class, mappedBy: 'post', orphanRemoval: true)]
     private Collection $ratings;
 
+    #[ORM\Column]
+    private ?int $total_rating_score = null;
+
+    #[ORM\Column]
+    private ?int $amount_of_ratings = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->ratings = new ArrayCollection();
+    }
+
+
+    public function AverageRating(): float
+    {
+        if ($this->amount_of_ratings === 0) {
+            return 0;
+        }else
+        return $this->total_rating_score / $this->amount_of_ratings;
     }
 
 
@@ -157,6 +172,30 @@ class Posts
                 $rating->setPost(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTotalRatingScore(): ?int
+    {
+        return $this->total_rating_score;
+    }
+
+    public function setTotalRatingScore(int $total_rating_score): static
+    {
+        $this->total_rating_score = $total_rating_score;
+
+        return $this;
+    }
+
+    public function getAmountOfRatings(): ?int
+    {
+        return $this->amount_of_ratings;
+    }
+
+    public function setAmountOfRatings(int $amount_of_ratings): static
+    {
+        $this->amount_of_ratings = $amount_of_ratings;
 
         return $this;
     }
