@@ -16,7 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     button.querySelector('i').classList.add('fa-solid');
 
 
-                } else {
+                }
+
+                else {
                     button.querySelector('i').classList.remove('fa-solid');
                     button.querySelector('i').classList.add('fa-regular');
                 }

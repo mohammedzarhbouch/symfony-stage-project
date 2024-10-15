@@ -21,90 +21,133 @@
         {% endif %}
     </div>
 
-
-    <div class="container">
-        <div class="button-container">
-            <a href="{{ path('create-post') }}" class="home-main-buttons">Create Post</a>
-            <a href="{{ path('show-posts') }}" class="home-main-buttons">Show my posts</a>
-            <a href="{{ path('show-comments') }}" class="home-main-buttons">Show my Comments</a>
-            <a href="{{ path('follow-list') }}" class="home-main-buttons">Follow List</a>
-{#            <a href="{{ path('saved-ratings') }}" class="home-main-buttons">test</a>#}
-
-
-        </div>
-
-        <div class="home-main">
-            {% for post in posts %}
-                <div class="post">
-                    <a class="inspect-link" href="{{ path('inspect-post', { 'id': post.id }) }}">
-                        <div class="title-data">{{ post.title }}</div>
-                    </a>
-                    <div class="text-data">{{ post.id }}</div>
-{#                        <div>{{ post.userRating }}</div>#}
-
-
-                    {% set userRating = 0 %}
-
-                    {% for rating in userRatings %}
-                        {% if rating.post.id == post.id %}
-
-                            {% set userRating = rating.score %}
-
-                        {% endif %}
-                    {% endfor %}
+    <div class="button-container">
+        <a href="{{ path('create-post') }}" class="home-main-buttons">Create Post</a>
+        <a href="{{ path('show-posts') }}" class="home-main-buttons">Show my posts</a>
+        <a href="{{ path('show-comments') }}" class="home-main-buttons">Show my Comments</a>
+        <a href="{{ path('follow-list') }}" class="home-main-buttons">Follow List</a>
 
 
 
+    </div>
+    <div class="home-container">
+        <div class="home-main-container">
 
-                <a class="rating-text">Rate this post!</a>
-                    <div class="ratings" data-user-rating="{{ userRating }}">
-                        <div class="rating-button-container">
-                            <a class="rating-button" data-value="1" data-id="{{ post.id }}">
-                                <i class="{{ userRating}} fa-star"></i>
-                            </a>
-                            <a class="rating-button" data-value="2" data-id="{{ post.id }}">
-                                <i class="{{ userRating}} fa-star"></i>
-                            </a>
-                            <a class="rating-button" data-value="3" data-id="{{ post.id }}">
-                                <i class="{{ userRating}} fa-star"></i>
-                            </a>
-                            <a class="rating-button" data-value="4" data-id="{{ post.id }}">
-                                <i class="{{ userRating}} fa-star"></i>
-                            </a>
-                            <a class="rating-button" data-value="5" data-id="{{ post.id }}">
-                                <i class="{{ userRating }} fa-star"></i>
-                            </a>
+            <div class="search-bar">
+                <form id="search-form" action="{{ path('searched-posts') }}" method="post">
+                    <input class="search-input" type="text" name="searchInput" placeholder="Search posts...">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+
+            <div class="home-main" id="posts-container">
+                {% for post in posts %}
+                    <div class="post">
+
+                        <a class="inspect-link" href="{{ path('inspect-post', { 'id': post.id }) }}">
+                            <div class="title-data">{{ post.title }}</div>
+                        </a>
+
+                        <div class="text-data">{{ post.text }}</div>
+
+                        {% set userRating = 0 %}
+                        {% for rating in userRatings %}
+                            {% if rating.post.id == post.id %}
+                                {% set userRating = rating.score %}
+                            {% endif %}
+                        {% endfor %}
+
+                        <a class="rating-text">Rate this post!</a>
+                        <div class="ratings" data-user-rating="{{ userRating }}">
+                            <div class="rating-button-container">
+                                <a class="rating-button" data-value="1" data-id="{{ post.id }}">
+                                    <i class="{{ userRating >= 1 ? 'fa-solid fa-star' : 'fa-regular fa-star' }}"></i>
+                                </a>
+                                <a class="rating-button" data-value="2" data-id="{{ post.id }}">
+                                    <i class="{{ userRating >= 2 ? 'fa-solid fa-star' : 'fa-regular fa-star' }}"></i>
+                                </a>
+                                <a class="rating-button" data-value="3" data-id="{{ post.id }}">
+                                    <i class="{{ userRating >= 3 ? 'fa-solid fa-star' : 'fa-regular fa-star' }}"></i>
+                                </a>
+                                <a class="rating-button" data-value="4" data-id="{{ post.id }}">
+                                    <i class="{{ userRating >= 4 ? 'fa-solid fa-star' : 'fa-regular fa-star' }}"></i>
+                                </a>
+                                <a class="rating-button" data-value="5" data-id="{{ post.id }}">
+                                    <i class="{{ userRating >= 5 ? 'fa-solid fa-star' : 'fa-regular fa-star' }}"></i>
+                                </a>
+                            </div>
                         </div>
 
-
-
-
-
-
-                    </div>
-
-
-
-
-
-                    <div class="home-post-footer">
-
-                        <a class="home-post-date">{{ post.date|date('d-m-Y') }}</a>
-                        <div class="popup" >
-                            <a>Posts: {{ post.user.postCount }}</a>
-                            <a>Comments: {{ post.user.commentCount }}</a>
+                        <div class="home-post-footer">
+                            <a class="home-post-date">{{ post.date|date('d-m-Y') }}</a>
+                            <div class="popup">
+                                <a>Posts: {{ post.user.postCount }}</a>
+                                <a>Comments: {{ post.user.commentCount }}</a>
+                            </div>
+                            <div class="homePostedBy">{{ post.user.username }}</div>
                         </div>
-                        <div class="homePostedBy" >{{ post.user.username }}</div>
+
                     </div>
-                </div>
-
-
-
-            {% else %}
-                <p>No posts available.</p>
-            {% endfor %}
+                {% else %}
+                    <p>No posts available.</p>
+                {% endfor %}
+            </div>
         </div>
     </div>
+
+
+<script>
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const searchForm = document.getElementById('search-form');
+        searchForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const searchData = new FormData(searchForm);
+            const searchQuery = searchData.get('searchInput');
+
+            fetch('search-posts', {
+                method: 'POST',
+                body: JSON.stringify({ searchInput: searchQuery }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.posts);
+
+                    renderPosts(data.posts);
+                })
+
+
+            function renderPosts(posts) {
+                const postsContainer = document.getElementById('posts-container');
+                postsContainer.innerHTML = '';
+
+
+                posts.forEach(post => {
+                    console.log('Current Post:', post);
+                    const postElement = document.createElement('div');
+                    postElement.className = 'post';
+
+                    postElement.innerHTML = `
+            <a class="inspect-link" href="/inspect-post/${post.id}">
+                <div class="title-data">{{ post.title }}</div>
+            </a>
+            <div class="text-data">{{ post.text }}</div>
+
+        `;
+                    postsContainer.appendChild(postElement);
+                });
+            }
+        });
+    });
+
+
+</script>
 
 
 {% endblock %}

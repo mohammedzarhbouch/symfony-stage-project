@@ -21,6 +21,18 @@ class PostsRepository extends ServiceEntityRepository
         parent::__construct($registry, Posts::class);
     }
 
+    public function searchByTitleAndText(string $searchTerm)
+    {
+        return $this->createQueryBuilder('posts')
+            ->leftJoin('posts.user', 'user')
+            ->addSelect('user')
+            ->where('posts.title LIKE :searchTerm')
+            ->orWhere('posts.text LIKE :searchTerm')
+            ->setParameter('searchTerm', '%' . $searchTerm . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Posts[] Returns an array of Posts objects
 //     */

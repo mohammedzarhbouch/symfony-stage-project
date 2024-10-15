@@ -66,4 +66,32 @@ class HomeController extends AbstractController
 
 
 
+
+
+    /**
+     * @Route("/search-posts", name="searched-posts", methods={"POST"})
+     */
+    public function searchedPosts(Request $request, EntityManagerInterface $entityManager): Response
+    {
+
+        $data = json_decode($request->getContent(), true);
+        $searchInput = $data['searchInput'];
+        $searchedPosts = [];
+
+        if ($searchInput) {
+            $searchedPosts = $entityManager->getRepository(Posts::class)
+                ->searchByTitleAndText($searchInput);
+
+        }
+
+        $user = $this->getUser();
+        $userRatings = $entityManager->getRepository(Rating::class)->findBy(['user' => $user]);
+
+        return $this->json([
+            'posts' => $searchedPosts,
+            'alreadyFollowing' => $request->get('alreadyFollowing'),
+            'userRatings' => $userRatings,
+        ]);
+    }
+
 }

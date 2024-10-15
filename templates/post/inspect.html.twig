@@ -8,28 +8,62 @@
 
 <div class="inspect-container">
     <div class="inspect-post-container">
-    <div class="inspect-post">
+        <div class="inspect-post">
 
-        <div class="title-data">{{ post.title }}</div>
-        <div class="text-data">{{ post.text }}</div>
+            <div class="title-data">{{ post.title }}</div>
+            <div class="text-data">{{ post.text }}</div>
 
-        <form action="{{ path('follow_user', {'id': post.user.id}) }}" method="POST">
-            <button type="submit">Follow</button>
-        </form>
+            <form action="{{ path('follow_user', {'id': post.user.id}) }}" method="POST">
+                <button type="submit">Follow</button>
+            </form>
+
+            {% set userRating = 0 %}
+
+            {% for rating in userRatings %}
+                {% if rating.post.id == post.id %}
+
+                    {% set userRating = rating.score %}
+
+                {% endif %}
+            {% endfor %}
+
+            <div class="inspect-rating">
+                <div class="ratings">
+                    <div class="rating-button-container">
+
+                        {% set fullStars = post.averageRating|round(0, 'floor') %}
+                        {% set hasHalfStar = post.averageRating != fullStars %}
 
 
 
-        <div class="inspect-rating">test</div>
+                        {% for i in 1..5 %}
+                            {% if i <= fullStars %}
+                                <i class="fas fa-star"></i>
 
-        <div class="myposts-footer">
+                            {% elseif i == fullStars + 1 and hasHalfStar %}
+                                <i class="fas fa-star-half-alt"></i>
 
-            <a class="inspect-post-date">{{ post.date|date("d-m-Y") }}</a>
-            <div class="postedBy">{{ post.user.username }}</div>
+                            {% else %}
+                                <i class="far fa-star"></i>
 
+                            {% endif %}
+                        {% endfor %}
+                        <span>Average rating: {{ post.averageRating|number_format(1) }}</span>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="myposts-footer">
+
+                <a class="inspect-post-date">{{ post.date|date("d-m-Y") }}</a>
+                <div class="postedBy">{{ post.user.username }}</div>
+
+
+            </div>
 
         </div>
-
-    </div>
     </div>
 
 

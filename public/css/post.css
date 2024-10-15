@@ -110,6 +110,7 @@
     display: flex;
     justify-content: space-around;
     margin-bottom: 20px;
+    color: white;
 }
 
 
@@ -120,7 +121,7 @@
 }
 
 .rating-button i {
-    color: grey;
+    color: white;
     transition: color 0.2s ease;
 }
 
@@ -134,13 +135,7 @@
     font-weight: 900;
 }
 
-.rating-button i.fa-regular:before {
-    content: "\f005"; /* Regular star outline */
-}
 
-.rating-button i.fa-solid:before {
-    content: "\f005"; /* Solid star icon */
-}
 
 
 .rating-text {

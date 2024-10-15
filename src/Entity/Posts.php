@@ -53,8 +53,10 @@ class Posts
     {
         if ($this->amount_of_ratings === 0) {
             return 0;
-        }else
-        return $this->total_rating_score / $this->amount_of_ratings;
+        }
+        $average =  $this->total_rating_score / $this->amount_of_ratings;
+
+        return round($average *2) /2;
     }
 
 
