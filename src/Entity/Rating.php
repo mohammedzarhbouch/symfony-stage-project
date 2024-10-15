@@ -64,4 +64,16 @@ class Rating
 
         return $this;
     }
+
+
+    public function toArray()
+    {
+        return[
+            'id' => $this->id,
+            'user' => $this->user->getUsername(),
+            'post' => $this->post->getId(),
+            'score' => $this->score,
+
+        ];
+    }
 }

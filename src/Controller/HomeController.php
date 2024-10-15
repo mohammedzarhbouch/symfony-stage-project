@@ -77,20 +77,31 @@ class HomeController extends AbstractController
         $data = json_decode($request->getContent(), true);
         $searchInput = $data['searchInput'];
         $searchedPosts = [];
+        $userRatingsArray = [];
 
-        if ($searchInput) {
-            $searchedPosts = $entityManager->getRepository(Posts::class)
-                ->searchByTitleAndText($searchInput);
-
-        }
 
         $user = $this->getUser();
         $userRatings = $entityManager->getRepository(Rating::class)->findBy(['user' => $user]);
 
+        if ($searchInput) {
+            $searchedThing = $entityManager->getRepository(Posts::class)
+                ->searchByTitleAndText($searchInput);
+
+        }
+        foreach($searchedThing as $post){
+            $searchedPosts[] = $post->toArray();
+
+        }
+
+
+        foreach($userRatings as $rating){
+            $userRatingsArray[] = $rating->toArray();
+        }
+
         return $this->json([
             'posts' => $searchedPosts,
             'alreadyFollowing' => $request->get('alreadyFollowing'),
-            'userRatings' => $userRatings,
+            'userRatings' => $userRatingsArray,
         ]);
     }
 

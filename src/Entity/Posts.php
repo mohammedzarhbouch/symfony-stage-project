@@ -49,7 +49,7 @@ class Posts
     }
 
 
-    public function AverageRating(): float
+    public function averageRating(): float
     {
         if ($this->amount_of_ratings === 0) {
             return 0;
@@ -58,6 +58,22 @@ class Posts
 
         return round($average *2) /2;
     }
+
+    public function toArray() {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'text' => $this->text,
+            'user' => $this->user->getUsername(),
+            'date' => date_format($this->date, 'Y-m-d'),
+            'comments' => $this->comments,
+            'ratings' => $this->ratings,
+            'total_rating_score' => $this->total_rating_score,
+            'average_rating' => $this->averageRating(),
+
+        ];
+    }
+
 
 
 
