@@ -358,4 +358,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
 
+    public function toArray()
+    {
+        return[
+            'post_count' => $this->post_count,
+            'comment_count' => $this->comment_count,
+
+        ];
+
+
+
+    }
+
 }

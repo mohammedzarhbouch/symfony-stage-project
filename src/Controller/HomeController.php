@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Posts;
 use App\Entity\Rating;
+use App\Entity\User;
 use App\Form\PostFormType;
 use Doctrine\ORM\EntityManagerInterface;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -80,12 +82,13 @@ class HomeController extends AbstractController
         $userRatingsArray = [];
 
 
+
         $user = $this->getUser();
         $userRatings = $entityManager->getRepository(Rating::class)->findBy(['user' => $user]);
 
+
         if ($searchInput) {
-            $searchedThing = $entityManager->getRepository(Posts::class)
-                ->searchByTitleAndText($searchInput);
+            $searchedThing = $entityManager->getRepository(Posts::class)->searchByTitleAndText($searchInput);
 
         }
         foreach($searchedThing as $post){
@@ -98,10 +101,15 @@ class HomeController extends AbstractController
             $userRatingsArray[] = $rating->toArray();
         }
 
+
+
+
+
         return $this->json([
             'posts' => $searchedPosts,
             'alreadyFollowing' => $request->get('alreadyFollowing'),
             'userRatings' => $userRatingsArray,
+
         ]);
     }
 

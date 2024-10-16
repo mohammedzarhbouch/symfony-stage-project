@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let ratingButtons = rating.querySelectorAll('.rating-button');
 
 
+
         function updateStars(newRating) {
             ratingButtons.forEach(button => {
                 const buttonValue = parseInt(button.getAttribute('data-value'));
@@ -23,14 +24,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     button.querySelector('i').classList.add('fa-regular');
                 }
 
-                console.log(newRating);
+                // console.log(newRating);
 
 
 
             });
         }
-
-
         updateStars(userRating);
 
 
