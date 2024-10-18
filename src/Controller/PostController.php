@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Posts;
 use App\Entity\Rating;
+use App\Entity\Vote;
 use App\Form\PostFormType;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -130,18 +131,26 @@ class PostController extends AbstractController
     /**
      * @Route("/inspect-post/{id}", name="inspect-post")
      */
-    public function inspectPost($id, EntityManagerInterface $entityManager): Response
+    public function inspectPost($id,  EntityManagerInterface $entityManager): Response
     {
 
         $user = $this->getUser();
         $post = $entityManager->getRepository(Posts::class)->find($id);
 
+        $comments = $entityManager->getRepository(Comment::class)->findBy(['post' => $post]);
+
         $userRatings = $entityManager->getRepository(Rating::class)->findBy(['user' => $user]);
+
+        $votesByUser = $entityManager->getRepository(Vote::class)->findBy([
+            'user' => $user,
+            'comment' => $comments
+        ]);
 
 
         return $this->render('post/inspect.html.twig', [
             'post' => $post,
             'userRatings' => $userRatings,
+            'votesByUser' => $votesByUser
 
         ]);
     }

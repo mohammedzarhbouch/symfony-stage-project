@@ -58,6 +58,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Rating::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $ratings;
 
+    #[ORM\OneToMany(targetEntity: Vote::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $votes;
+
+    #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $likes;
+
 
 
     public function __construct()
@@ -68,6 +74,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->followedBy = new ArrayCollection();
         $this->following = new ArrayCollection();
         $this->ratings = new ArrayCollection();
+        $this->votes = new ArrayCollection();
+        $this->likes = new ArrayCollection();
 
 
 
@@ -176,7 +184,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->posts->contains($post)) {
             $this->posts->add($post);
-            $post->setUid($this);
+            $post->setUser($this);
         }
 
         return $this;
@@ -186,8 +194,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->posts->removeElement($post)) {
             // set the owning side to null (unless already changed)
-            if ($post->getUid() === $this) {
-                $post->setUid(null);
+            if ($post->getUser() === $this) {
+                $post->setUser(null);
             }
         }
 
@@ -368,6 +376,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
 
+    }
+
+    /**
+     * @return Collection<int, Vote>
+     */
+    public function getVotes(): Collection
+    {
+        return $this->votes;
+    }
+
+    public function addVote(Vote $vote): static
+    {
+        if (!$this->votes->contains($vote)) {
+            $this->votes->add($vote);
+            $vote->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVote(Vote $vote): static
+    {
+        if ($this->votes->removeElement($vote)) {
+            // set the owning side to null (unless already changed)
+            if ($vote->getUser() === $this) {
+                $vote->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Like>
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Like $like): static
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes->add($like);
+            $like->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Like $like): static
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getUser() === $this) {
+                $like->setUser(null);
+            }
+        }
+
+        return $this;
     }
 
 }

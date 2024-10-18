@@ -51,6 +51,10 @@
 
                         <div class="text-data">{{ post.text }}</div>
 
+                        <div class="like">
+                            <button>like</button>
+                        </div>
+
                         {% set userRating = 0 %}
                         {% for rating in userRatings %}
                             {% if rating.post.id == post.id %}

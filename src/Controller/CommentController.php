@@ -6,7 +6,9 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Posts;
+use App\Entity\Rating;
 use App\Entity\User;
+use App\Entity\Vote;
 use App\Form\CommentFormType;
 
 
@@ -62,7 +64,7 @@ class CommentController extends AbstractController
         $user = $this->getUser();
 
         $myComments = $entityManager->getRepository(Comment::class)->findBy(['user' => $user]);
-//        dd($myComments);
+
 
         return $this->render('comments/show-comments.html.twig', [
             'myComments' => $myComments,
@@ -150,21 +152,75 @@ class CommentController extends AbstractController
     }
 
 
+//
+//    public function deleteCommentFromPost(int $id, Request $request, EntityManagerInterface $entityManager): Response
+//    {
+//        $comment = $entityManager->getRepository(Comment::class)->find($id);
+//
+//        $user = $this->getUser();
+//
+//        $user->setCommentCount($user->getCommentCount() - 1);
+//
+//
+//
+//        $entityManager->remove($comment);
+//        $entityManager->flush();
+//
+//        return $this->redirectToRoute('show-comments');
+//    }
 
-    public function deleteCommentFromPost(int $id, Request $request, EntityManagerInterface $entityManager): Response
+
+    /**
+     * @Route("/comment/vote/{id}/{voteType}", name="vote", methods={"POST"})
+     */
+    public function vote(Comment $comment, EntityManagerInterface $entityManager, int $voteType): Response
     {
-        $comment = $entityManager->getRepository(Comment::class)->find($id);
-
         $user = $this->getUser();
 
-        $user->setCommentCount($user->getCommentCount() - 1);
+        $alreadyVoted = $entityManager->getRepository(Vote::class)->findOneBy([
+            'user' => $user,
+            'comment' => $comment
+        ]);
 
 
 
-        $entityManager->remove($comment);
+        if ($alreadyVoted) {
+
+            if ($alreadyVoted->getVoteType() === $voteType) {
+//                return $this->redirectToRoute('inspect-post', ['id' => $comment->getPost()->getId()]);
+                exit();
+            }
+
+            $alreadyVoted->setVoteType($voteType);
+            $entityManager->persist($alreadyVoted);
+
+        } else {
+            $vote = new Vote();
+            $vote->setUser($user);
+            $vote->setComment($comment);
+            $vote->setVoteType($voteType);
+            $vote->setCreatedAt(new \DateTime("now", new \DateTimeZone("Europe/Amsterdam")));
+            $entityManager->persist($vote);
+        }
+
+        if ($voteType === 1) {
+            $newVoteCount = $comment->getVoteScore() + 1; // Upvote
+        } else {
+            $newVoteCount = $comment->getVoteScore() - 1; // Downvote
+        }
+
+        $comment->setVotes($newVoteCount);
+        $entityManager->persist($comment);
+
+
         $entityManager->flush();
 
-        return $this->redirectToRoute('show-comments');
+
+        return $this->json([
+            'success' => true,
+            'newVoteCount' => $newVoteCount,
+//            'alreadyVoted' => $alreadyVoted,
+        ]);
     }
 
 

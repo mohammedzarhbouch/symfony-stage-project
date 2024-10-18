@@ -42,10 +42,17 @@ class Posts
     #[ORM\Column]
     private ?int $amount_of_ratings = null;
 
+    #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'post', orphanRemoval: true)]
+    private Collection $likes;
+
+    #[ORM\Column]
+    private ?int $total_likes = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->ratings = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
 
@@ -214,6 +221,48 @@ class Posts
     public function setAmountOfRatings(int $amount_of_ratings): static
     {
         $this->amount_of_ratings = $amount_of_ratings;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Like>
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Like $like): static
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes->add($like);
+            $like->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Like $like): static
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getPost() === $this) {
+                $like->setPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTotalLikes(): ?int
+    {
+        return $this->total_likes;
+    }
+
+    public function setTotalLikes(int $total_likes): static
+    {
+        $this->total_likes = $total_likes;
 
         return $this;
     }

@@ -23,7 +23,9 @@
     <script src="{{ asset('js/rating.js') }}"></script>
     <script src="{{ asset('js/DynamicRatingUpdate.js') }}"></script>
     <script src="{{ asset('js/following.js') }}"></script>
-    <script src="{{ asset('js/search.js') }}"></script>
+    <script src="{{ asset('js/home.js') }}"></script>
+    <script src="{{ asset('js/votes.js') }}"></script>
+
 
 
     {% block stylesheets %}
@@ -45,6 +47,7 @@
             <a href="{{ path('profilepage') }}">Profile</a>
             {% if 'ROLE_ADMIN' in app.user.roles %}
                 <a href="{{ path('admin') }}"> Admin</a>
+                <a href="{{ path('secret') }}"> SHUSH!</a>
             {% endif %}
         {% else %}
             <a href="{{ path('app_register') }}">Register</a>

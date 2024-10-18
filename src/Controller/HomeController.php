@@ -90,12 +90,14 @@ class HomeController extends AbstractController
         if ($searchInput) {
             $searchedThing = $entityManager->getRepository(Posts::class)->searchByTitleAndText($searchInput);
 
+        }else{
+            $searchedThing = $entityManager->getRepository(Posts::class)->findAll();
         }
+
         foreach($searchedThing as $post){
             $searchedPosts[] = $post->toArray();
 
         }
-
 
         foreach($userRatings as $rating){
             $userRatingsArray[] = $rating->toArray();

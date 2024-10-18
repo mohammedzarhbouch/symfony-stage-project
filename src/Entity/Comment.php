@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CommentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -33,6 +35,17 @@ class Comment
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updated_at = null;
+
+    #[ORM\Column]
+    private ?int $voteScore = 0;
+
+    #[ORM\OneToMany(targetEntity: Vote::class, mappedBy: 'comment', orphanRemoval: true)]
+    private Collection $votes;
+
+    public function __construct()
+    {
+        $this->votes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -107,6 +120,59 @@ class Comment
     public function setUpdatedAt(?\DateTimeInterface $updated_at): static
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getVoteScore(): ?int
+    {
+        return $this->voteScore;
+    }
+
+    public function setVotes(int $voteScore): static
+    {
+        $this->voteScore = $voteScore;
+
+        return $this;
+    }
+
+//    public function upvote(): void
+//    {
+//        $this->voteScore++;
+//
+//    }
+//
+//    public function downvote(): void
+//    {
+//        $this->voteScore--;
+//    }
+
+    /**
+     * @return Collection<int, Vote>
+     */
+    public function getVotes(): Collection
+    {
+        return $this->votes;
+    }
+
+    public function addVotes(Vote $votes): static
+    {
+        if (!$this->votes->contains($votes)) {
+            $this->votes->add($votes);
+            $votes->setComment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVotes(Vote $votes): static
+    {
+        if ($this->votes->removeElement($votes)) {
+            // set the owning side to null (unless already changed)
+            if ($votes->getComment() === $this) {
+                $votes->setComment(null);
+            }
+        }
 
         return $this;
     }

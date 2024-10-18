@@ -136,21 +136,70 @@ margin: 20px;
 }
 
 .edit-comment-button {
-    margin: 10px 20px 5px 20px;
-    background-color: darkorange;
-    color: white;
-    border-radius: 5px;
+    margin: 10px 10px 5px 10px;
+    background-color: white;
+    color: black;
+    /*border-radius: 5px;*/
     width: 50px;
     transition: ease-in-out .2s;
+    padding: 5px;
+
 
 }
 
 .edit-comment-button:hover {
-    background-color: white;
+    background-color: lightgreen;
     color: black;
+    cursor: pointer;
+
 }
 
 .comment-edit-date {
     margin: 10px 20px 0px 20px;
+
+}
+
+.vote-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.vote-count {
+    width: 50px;
+    /*background-color: red;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.vote-button {
+    background-color: transparent;
+    color: white;
+    padding: 0px;
+    border-radius: 50%;
+    font-size: large;
+    box-shadow: none;
+    border: none;
+    transition: ease-in-out .1s;
+    margin: 2px;
+}
+
+
+
+.vote-button:hover {
+    cursor: pointer;
+    color: orange;
+    /*box-shadow:  1px 1px 1px black ;*/
+    /*background-color: transparent;*/
+}
+
+
+.vote-button.voted {
+    color: green;
+}
+
+/* Styling for voted down */
+.vote-button.voted[data-value="0"] {
+    color: red;
 }
 
