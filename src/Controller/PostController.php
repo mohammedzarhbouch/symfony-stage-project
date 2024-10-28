@@ -7,6 +7,7 @@ use App\Entity\Comment;
 use App\Entity\Posts;
 use App\Entity\Rating;
 use App\Entity\Vote;
+use App\Entity\Like;
 use App\Form\PostFormType;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -156,6 +157,54 @@ class PostController extends AbstractController
     }
 
 
+    /**
+     * @Route("/like-post/{id}", name="like-post")
+     */
+
+    public function likePost(int $id, EntityManagerInterface $entityManager): Response
+
+    {
+        $user = $this->getUser();
+        $post = $entityManager->getRepository(Posts::class)->find($id);
+
+
+
+        $alreadyLiked = $entityManager->getRepository(Like::class)->findOneBy([
+            'post' => $post,
+            'user' => $user,
+            ]);
+
+        if ($alreadyLiked) {
+            // change it to remove 1 from the total likes when clicked if already liked
+            $entityManager->remove($alreadyLiked);
+            $currentTotalLikes = $post->getTotalLikes();
+            $newTotalLikes = $currentTotalLikes - 1;
+            $post->setTotalLikes($newTotalLikes);
+
+
+        }else{
+
+            $like = new Like();
+            $like->setUser($this->getUser());
+            $like->setPost($post);
+
+            $entityManager->persist($like);
+
+
+            $currentTotalLikes = $post->getTotalLikes();
+            $newTotalLikes = $currentTotalLikes + 1;
+            $post->setTotalLikes($newTotalLikes);
+
+        }
+
+
+        $entityManager->flush();
+
+        return $this->json([
+            'success' => true,
+            'newTotalLikes' => $newTotalLikes,
+        ]);
+    }
 
 
 }

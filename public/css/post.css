@@ -143,8 +143,18 @@
     text-align: center;
 }
 
-.like {
-    float: right;
+.like-container {
+    display: flex;
+    flex-direction: row;
 }
 
+.like {
+    color: red;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: large;
+}
 
+.total-likes {
+    color: white;
+}

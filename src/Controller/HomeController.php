@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Like;
 use App\Entity\Posts;
 use App\Entity\Rating;
 use App\Entity\User;
@@ -33,10 +34,15 @@ class HomeController extends AbstractController
 
 
 
+
+
+
+
             return $this->render('user/home.html.twig', [
                 "posts" => $allPosts,
                 'alreadyFollowing' => $request->get('alreadyFollowing'),
                 'userRatings' => $userRatings,
+
 
             ]);
 

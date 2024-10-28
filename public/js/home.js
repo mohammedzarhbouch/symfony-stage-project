@@ -1,3 +1,33 @@
+
+
+
+function updateLikeButton(likeElement, postId) {
+    const likeButton = likeElement.querySelector('.like');
+    const totalLikesElement = likeElement.querySelector('.total-likes');
+
+    likeButton.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        fetch(`/test-project/public/like-post/${postId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the total likes count
+                    totalLikesElement.textContent = data.newTotalLikes;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+}
+
 function updateStars(ratingsElement, newRating) {
     const ratingButtons = ratingsElement.querySelectorAll('.rating-button');
     ratingButtons.forEach(button => {
@@ -40,12 +70,24 @@ function addButtonListener() {
                     const ratingsElement = button.closest('.ratings');
                     updateStars(ratingsElement, ratingValue);
 
+
+
+
         });
     });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
     addButtonListener();
+
+
+    const likeContainers = document.querySelectorAll('.like-container');
+    likeContainers.forEach(likeElement => {
+        const postId = likeElement.querySelector('.like').dataset.id;
+        updateLikeButton(likeElement, postId);
+    });
+
+
 
     const searchForm = document.getElementById('search-form');
     searchForm.addEventListener('submit', function (event) {
@@ -62,7 +104,11 @@ document.addEventListener("DOMContentLoaded", () => {
         })
             .then(response => response.json())
             .then(data => {
+
+                document.querySelector(".total-likes").innerHTML = data.newTotalLikes;
                 renderPosts(data.posts, data.userRatings);
+
+                console.log(data.posts)
                 addButtonListener();
             });
 
@@ -92,6 +138,16 @@ document.addEventListener("DOMContentLoaded", () => {
                         <div class="title-data">${post.title}</div>
                     </a>
                     <div class="text-data">${post.text}</div>
+                    
+                      <div class="like-container">
+                            <a class="like" href="{{ path('like-post', {'id': post.id}) }}">
+                                <i class="fa-regular fa-heart"></i>
+                            </a>
+                            <div class="total-likes">${post.total_likes}</div>
+                        </div>
+                    
+                    
+                    
                     <div class="ratings" data-user-rating="${userRating}">
                         <div class="rating-button-container">
                             <a class="rating-button" data-value="1" data-id="${post.id}">
@@ -126,6 +182,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Update stars for the new post
                 const ratingsElement = postElement.querySelector('.ratings');
                 updateStars(ratingsElement, userRating);
+
+                const likeElement = postElement.querySelector('.like-container');
+                updateLikeButton(likeElement, post.id);
             });
         }
 
@@ -133,4 +192,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     });
+
+
 });

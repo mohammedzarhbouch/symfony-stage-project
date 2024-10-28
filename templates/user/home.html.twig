@@ -51,9 +51,14 @@
 
                         <div class="text-data">{{ post.text }}</div>
 
-                        <div class="like">
-                            <button>like</button>
+
+                        <div class="like-container">
+                            <a class="like" href="{{ path('like-post', {'id': post.id}) }}" data-id="{{ post.id }}">
+                                <i class="fa-regular fa-heart"></i>
+                            </a>
+                            <div class="total-likes">{{ post.totalLikes}}</div>
                         </div>
+
 
                         {% set userRating = 0 %}
                         {% for rating in userRatings %}

@@ -46,7 +46,7 @@ class Posts
     private Collection $likes;
 
     #[ORM\Column]
-    private ?int $total_likes = null;
+    private ?int $total_likes = 0;
 
     public function __construct()
     {
@@ -77,6 +77,7 @@ class Posts
             'ratings' => $this->ratings,
             'total_rating_score' => $this->total_rating_score,
             'average_rating' => $this->averageRating(),
+            'total_likes' => $this->total_likes,
 
         ];
     }
