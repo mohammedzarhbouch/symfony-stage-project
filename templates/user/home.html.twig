@@ -51,9 +51,9 @@
 
                         <div class="text-data">{{ post.text }}</div>
 
-
+                        {% set likedPostIds = likes|map(like => like.post.id) %}
                         <div class="like-container">
-                            <a class="like" href="{{ path('like-post', {'id': post.id}) }}" data-id="{{ post.id }}">
+                            <a class="like" href="{{ path('like-post', {'id': post.id}) }}" data-id="{{ post.id }}" data-like-state="{{ post.id in likedPostIds ? 'true' : 'false' }}">
                                 <i class="fa-regular fa-heart"></i>
                             </a>
                             <div class="total-likes">{{ post.totalLikes}}</div>

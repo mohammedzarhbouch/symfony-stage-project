@@ -32,6 +32,8 @@ class HomeController extends AbstractController
         $user = $this->getUser();
         $userRatings = $entityManager->getRepository(Rating::class)->findBy(['user' => $user]);
 
+        // Fetch only liked post IDs for the current user
+        $likes = $entityManager->getRepository(Like::class)->findBy(['user' => $user]);
 
 
 
@@ -40,6 +42,7 @@ class HomeController extends AbstractController
 
             return $this->render('user/home.html.twig', [
                 "posts" => $allPosts,
+                'likes' => $likes,
                 'alreadyFollowing' => $request->get('alreadyFollowing'),
                 'userRatings' => $userRatings,
 
@@ -108,8 +111,6 @@ class HomeController extends AbstractController
         foreach($userRatings as $rating){
             $userRatingsArray[] = $rating->toArray();
         }
-
-
 
 
 

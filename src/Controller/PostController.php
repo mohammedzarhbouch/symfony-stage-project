@@ -146,19 +146,22 @@ class PostController extends AbstractController
             'user' => $user,
             'comment' => $comments
         ]);
+        $likes = $entityManager->getRepository(Like::class)->findBy(['user' => $user]);
+
 
 
         return $this->render('post/inspect.html.twig', [
             'post' => $post,
             'userRatings' => $userRatings,
-            'votesByUser' => $votesByUser
+            'votesByUser' => $votesByUser,
+            'likes' => $likes,
 
         ]);
     }
 
 
     /**
-     * @Route("/like-post/{id}", name="like-post")
+     * @Route("/like-post/{id}", name="like-post", methods={"POST"})
      */
 
     public function likePost(int $id, EntityManagerInterface $entityManager): Response
@@ -174,12 +177,18 @@ class PostController extends AbstractController
             'user' => $user,
             ]);
 
+
+
+
         if ($alreadyLiked) {
-            // change it to remove 1 from the total likes when clicked if already liked
+
             $entityManager->remove($alreadyLiked);
             $currentTotalLikes = $post->getTotalLikes();
             $newTotalLikes = $currentTotalLikes - 1;
             $post->setTotalLikes($newTotalLikes);
+
+
+
 
 
         }else{
@@ -187,6 +196,7 @@ class PostController extends AbstractController
             $like = new Like();
             $like->setUser($this->getUser());
             $like->setPost($post);
+            $like->setLiked(true);
 
             $entityManager->persist($like);
 
@@ -195,7 +205,10 @@ class PostController extends AbstractController
             $newTotalLikes = $currentTotalLikes + 1;
             $post->setTotalLikes($newTotalLikes);
 
+
         }
+
+
 
 
         $entityManager->flush();
@@ -203,6 +216,7 @@ class PostController extends AbstractController
         return $this->json([
             'success' => true,
             'newTotalLikes' => $newTotalLikes,
+
         ]);
     }
 

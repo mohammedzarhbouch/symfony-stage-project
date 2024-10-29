@@ -22,6 +22,11 @@ class Like
     #[ORM\JoinColumn(nullable: false)]
     private ?Posts $post = null;
 
+    #[ORM\Column]
+    private ?bool $liked = null;
+
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -50,4 +55,18 @@ class Like
 
         return $this;
     }
+
+    public function isLiked(): ?bool
+    {
+        return $this->liked;
+    }
+
+    public function setLiked(bool $liked): static
+    {
+        $this->liked = $liked;
+
+        return $this;
+    }
+
+
 }

@@ -1,12 +1,31 @@
 
 
 
+function updateLikeIcon(likeElement) {
+
+const likeButton = likeElement.querySelector('.like');
+const likeIcon = likeButton.querySelector('i')
+const likeState = likeButton.getAttribute('data-like-state')
+
+    if (likeState === 'true') {
+        likeIcon.classList.remove('fa-regular')
+        likeIcon.classList.add('fa-solid')
+    } else {
+        likeIcon.classList.remove('fa-solid')
+        likeIcon.classList.add('fa-regular')
+    }
+}
+
+
+
 function updateLikeButton(likeElement, postId) {
     const likeButton = likeElement.querySelector('.like');
     const totalLikesElement = likeElement.querySelector('.total-likes');
 
     likeButton.addEventListener('click', (event) => {
         event.preventDefault();
+
+
 
         fetch(`/test-project/public/like-post/${postId}`, {
             method: 'POST',
@@ -20,6 +39,13 @@ function updateLikeButton(likeElement, postId) {
                 if (data.success) {
                     // Update the total likes count
                     totalLikesElement.textContent = data.newTotalLikes;
+
+                    const currentState = likeButton.getAttribute('data-like-state') === 'true';
+                    likeButton.setAttribute('data-like-state', !currentState);
+
+
+                    updateLikeIcon(likeElement);
+
                 }
             })
             .catch(error => {
@@ -46,7 +72,7 @@ function updateStars(ratingsElement, newRating) {
 
 
 
-
+// adds a listener to the rating buttons so when clicked they change the rating in the db
 function addButtonListener() {
     const ratingButtons = document.querySelectorAll('.rating-button');
 
@@ -72,68 +98,33 @@ function addButtonListener() {
 
 
 
-
         });
     });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    addButtonListener();
 
 
-    const likeContainers = document.querySelectorAll('.like-container');
-    likeContainers.forEach(likeElement => {
-        const postId = likeElement.querySelector('.like').dataset.id;
-        updateLikeButton(likeElement, postId);
-    });
+// return the searched post and render them :)
+function renderPosts(posts, userRatings) {
+    const postsContainer = document.getElementById('posts-container');
+    postsContainer.innerHTML = '';
 
+    posts.forEach(post => {
+        const postElement = document.createElement('div');
+        postElement.className = 'post';
 
+        let userRating = 0;
 
-    const searchForm = document.getElementById('search-form');
-    searchForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-        const searchData = new FormData(searchForm);
-        const searchQuery = searchData.get('searchInput');
+        // FOR LOOP JS VERSION OF TWIG FOR LOOP
+        for (let i = 0; i < userRatings.length; i++) {
+            let userRatingId = userRatings[i].post;
 
-        fetch('search-posts', {
-            method: 'POST',
-            body: JSON.stringify({ searchInput: searchQuery }),
-            headers: {
-                'Content-Type': 'application/json'
+            if (post.id === userRatingId) {
+                userRating = userRatings[i].score;
             }
-        })
-            .then(response => response.json())
-            .then(data => {
+        }
 
-                document.querySelector(".total-likes").innerHTML = data.newTotalLikes;
-                renderPosts(data.posts, data.userRatings);
-
-                console.log(data.posts)
-                addButtonListener();
-            });
-
-
-        // return the searched post and render them :)
-        function renderPosts(posts, userRatings) {
-            const postsContainer = document.getElementById('posts-container');
-            postsContainer.innerHTML = '';
-
-            posts.forEach(post => {
-                const postElement = document.createElement('div');
-                postElement.className = 'post';
-
-                let userRating = 0;
-
-                // FOR LOOP JS VERSION OF TWIG FOR LOOP
-                for (let i = 0; i < userRatings.length; i++) {
-                    let userRatingId = userRatings[i].post;
-
-                    if (post.id === userRatingId) {
-                        userRating = userRatings[i].score;
-                    }
-                }
-
-                postElement.innerHTML = `
+        postElement.innerHTML = `
                     <a class="inspect-link" href="inspect-post/${post.id}">
                         <div class="title-data">${post.title}</div>
                     </a>
@@ -177,16 +168,58 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 `;
 
-                postsContainer.appendChild(postElement);
+        postsContainer.appendChild(postElement);
 
-                // Update stars for the new post
-                const ratingsElement = postElement.querySelector('.ratings');
-                updateStars(ratingsElement, userRating);
+        // Update stars for the new post
+        const ratingsElement = postElement.querySelector('.ratings');
+        updateStars(ratingsElement, userRating);
 
-                const likeElement = postElement.querySelector('.like-container');
-                updateLikeButton(likeElement, post.id);
+        const likeElement = postElement.querySelector('.like-container');
+        updateLikeButton(likeElement, post.id);
+        addButtonListener()
+
+
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    addButtonListener();
+
+
+    const likeContainers = document.querySelectorAll('.like-container');
+    likeContainers.forEach(likeElement => {
+        const postId = likeElement.querySelector('.like').dataset.id;
+        updateLikeButton(likeElement, postId);
+        updateLikeIcon(likeElement);
+    });
+
+
+
+    const searchForm = document.getElementById('search-form');
+    searchForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const searchData = new FormData(searchForm);
+        const searchQuery = searchData.get('searchInput');
+
+        fetch('search-posts', {
+            method: 'POST',
+            body: JSON.stringify({ searchInput: searchQuery }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+
+                document.querySelector(".total-likes").innerHTML = data.newTotalLikes;
+                renderPosts(data.posts, data.userRatings);
+
+                addButtonListener();
+
             });
-        }
+
+
+
 
 
 
