@@ -167,7 +167,7 @@ function renderPosts(posts, userRatings) {
                 <div class="homePostedBy">${post.user}</div>
             </div>
         `;
-
+    console.log(post.date)
 
         postsContainer.appendChild(postElement);
 

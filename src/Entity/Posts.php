@@ -72,7 +72,7 @@ class Posts
             'title' => $this->title,
             'text' => $this->text,
             'user' => $this->user->getUsername(),
-            'date' => date_format($this->date, 'Y-m-d'),
+            'date' => date_format($this->date, 'd m Y'),
             'comments' => $this->comments,
             'ratings' => $this->ratings,
             'total_rating_score' => $this->total_rating_score,
