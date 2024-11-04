@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Follow;
 use App\Entity\Posts;
 use App\Entity\Rating;
 use App\Entity\Vote;
@@ -14,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,6 +24,47 @@ use Symfony\Component\Validator\Constraints\DateTime;
 
 class PostController extends AbstractController
 {
+
+    /**
+     * @Route("/post-page", name="post-page")
+     */
+
+    public function postpage(Request $request, EntityManagerInterface $entityManager): Response
+    {
+
+        $allPosts = $entityManager->getRepository(Posts::class)->findAll();
+        $alreadyFollowing = $request->get('alreadyFollowing');
+
+        $user = $this->getUser();
+        $userRatings = $entityManager->getRepository(Rating::class)->findBy(['user' => $user]);
+
+        // Fetch only liked post IDs for the current user
+        $likes = $entityManager->getRepository(Like::class)->findBy(['user' => $user]);
+
+
+
+
+
+
+        return $this->render('post/postpage.html.twig', [
+            'allPosts' => $allPosts,
+            'user' => $user,
+            'userRatings' => $userRatings,
+            'likes' => $likes,
+            'alreadyFollowing' => $alreadyFollowing,
+
+
+        ]);
+    }
+
+
+
+
+
+
+
+
+
     /**
      * @Route("/create-post", name="create-post")
      */
@@ -216,6 +259,129 @@ class PostController extends AbstractController
         return $this->json([
             'success' => true,
             'newTotalLikes' => $newTotalLikes,
+
+        ]);
+    }
+
+
+    /**
+     * @Route("/search-posts", name="searched-posts", methods={"POST"})
+     */
+    public function searchedPosts(Request $request, EntityManagerInterface $entityManager): Response
+    {
+
+        $data = json_decode($request->getContent(), true);
+        $searchInput = $data['searchInput'];
+        $searchedPosts = [];
+        $userRatingsArray = [];
+
+
+
+        $user = $this->getUser();
+        $userRatings = $entityManager->getRepository(Rating::class)->findBy(['user' => $user]);
+
+
+        if ($searchInput) {
+            $searchedThing = $entityManager->getRepository(Posts::class)->searchByTitleAndText($searchInput);
+
+        }else{
+            $searchedThing = $entityManager->getRepository(Posts::class)->findAll();
+        }
+
+        foreach($searchedThing as $post){
+            $searchedPosts[] = $post->toArray();
+
+        }
+
+        foreach($userRatings as $rating){
+            $userRatingsArray[] = $rating->toArray();
+        }
+
+
+
+        return $this->json([
+            'posts' => $searchedPosts,
+            'alreadyFollowing' => $request->get('alreadyFollowing'),
+            'userRatings' => $userRatingsArray,
+
+        ]);
+    }
+
+
+
+
+    /**
+     * @Route("/most-liked", name="most-liked", methods={"GET"})
+     */
+
+    public function mostLiked(Request $request, EntityManagerInterface $entityManager): Response
+    {
+
+
+        $user = $this->getUser();
+
+        $userRatings = $entityManager->getRepository(Rating::class)->findBy(['user' => $user]);
+        $mostLikedPosts = $entityManager->getRepository(Posts::class)->findMostLikedPosts(10);
+
+        $userRatingsArray = [];
+        $mostLikedPostsArray = [];
+
+
+
+        foreach($userRatings as $rating){
+            $userRatingsArray[] = $rating->toArray();
+        }
+
+        foreach($mostLikedPosts as $post){
+            $mostLikedPostsArray[] = $post->toArray();
+        }
+
+
+
+        return $this->json([
+            'mostLikedPosts' => $mostLikedPostsArray,
+            'alreadyFollowing' => $request->get('alreadyFollowing'),
+            'userRatings' => $userRatingsArray,
+
+        ]);
+    }
+
+
+
+    /**
+     * @Route ("/following-posts", name="/following-posts")
+     */
+
+    public function followingPosts(Request $request, EntityManagerInterface $entityManager): Response
+    {
+
+        $user = $this->getUser();
+        $userId = $user->getId();
+        $following = $entityManager->getRepository(Follow::class)->findBy(['followerUser' => $userId]);
+        $userRatings = $entityManager->getRepository(Rating::class)->findBy(['user' => $user]);
+        $likes = $entityManager->getRepository(Like::class)->findBy(['user' => $user]);
+
+
+        $followedUserIds = [];
+        foreach ($following as $follow) {
+            $followedUserIds[] = $follow->getFollowedUser()->getId();
+        }
+
+        if (!empty($followedUserIds)) {
+            $followingPosts = $entityManager->getRepository(Posts::class)->createQueryBuilder('p')
+                ->where('p.user IN (:followedUserIds)')
+                ->setParameter('followedUserIds', $followedUserIds)
+                ->getQuery()
+                ->getResult();
+        } else {
+            $followingPosts = []; // No followed users, so no posts
+        }
+
+
+        return $this->render('post/followingPosts.html.twig', [
+            'followingPosts' => $followingPosts,
+            'userRatings' => $userRatings,
+            'likes' => $likes,
 
         ]);
     }

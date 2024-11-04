@@ -1,6 +1,7 @@
 
 
 
+
 function updateLikeIcon(likeElement) {
 
 const likeButton = likeElement.querySelector('.like');
@@ -115,58 +116,58 @@ function renderPosts(posts, userRatings) {
 
         let userRating = 0;
 
-        // FOR LOOP JS VERSION OF TWIG FOR LOOP
+        // Find user rating for the current post
         for (let i = 0; i < userRatings.length; i++) {
-            let userRatingId = userRatings[i].post;
+            let userRatingId = userRatings[i].post.id;
 
             if (post.id === userRatingId) {
                 userRating = userRatings[i].score;
             }
         }
 
+        // Check if the post is liked
+        const isLiked = likedPostIds.includes(post.id);
+
         postElement.innerHTML = `
-                    <a class="inspect-link" href="inspect-post/${post.id}">
-                        <div class="title-data">${post.title}</div>
+            <a class="inspect-link" href="inspect-post/${post.id}">
+                <div class="title-data">${post.title}</div>
+            </a>
+            <div class="text-data">${post.text}</div>
+            
+            <div class="like-container">
+                <a class="like" href="{{ path('like-post', {'id': post.id}) }}" data-like-state="${isLiked ? 'true' : 'false'}">
+                    <i class="${isLiked ? 'fa-solid fa-heart' : 'fa-regular fa-heart'}"></i>
+                </a>
+                <div class="total-likes">${post.total_likes}</div>
+            </div>
+            <a class="rating-text">Rate this post!</a>
+            <div class="ratings" data-user-rating="${userRating}">
+                <div class="rating-button-container">
+                    <a class="rating-button" data-value="1" data-id="${post.id}">
+                        <i class="${userRating >= 1 ? 'fa-solid fa-star' : 'fa-regular fa-star'}"></i>
                     </a>
-                    <div class="text-data">${post.text}</div>
-                    
-                      <div class="like-container">
-                            <a class="like" href="{{ path('like-post', {'id': post.id}) }}">
-                                <i class="fa-regular fa-heart"></i>
-                            </a>
-                            <div class="total-likes">${post.total_likes}</div>
-                        </div>
-                    
-                    
-                    
-                    <div class="ratings" data-user-rating="${userRating}">
-                        <div class="rating-button-container">
-                            <a class="rating-button" data-value="1" data-id="${post.id}">
-                                <i class="${userRating >= 1 ? 'fa-solid fa-star' : 'fa-regular fa-star'}"></i>
-                            </a>
-                            <a class="rating-button" data-value="2" data-id="${post.id}">
-                                <i class="${userRating >= 2 ? 'fa-solid fa-star' : 'fa-regular fa-star'}"></i>
-                            </a>
-                            <a class="rating-button" data-value="3" data-id="${post.id}">
-                                <i class="${userRating >= 3 ? 'fa-solid fa-star' : 'fa-regular fa-star'}"></i>
-                            </a>
-                            <a class="rating-button" data-value="4" data-id="${post.id}">
-                                <i class="${userRating >= 4 ? 'fa-solid fa-star' : 'fa-regular fa-star'}"></i>
-                            </a>
-                            <a class="rating-button" data-value="5" data-id="${post.id}">
-                                <i class="${userRating >= 5 ? 'fa-solid fa-star' : 'fa-regular fa-star'}"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="home-post-footer">
-                        <a class="home-post-date">${post.date}</a>
-                        <div class="popup">
-                            <a>Posts: ${post.user.postCount}</a>
-                            <a>Comments: ${post.user.commentCount}</a>
-                        </div>
-                        <div class="homePostedBy">${post.user}</div>
-                    </div>
-                `;
+                    <a class="rating-button" data-value="2" data-id="${post.id}">
+                        <i class="${userRating >= 2 ? 'fa-solid fa-star' : 'fa-regular fa-star'}"></i>
+                    </a>
+                    <a class="rating-button" data-value="3" data-id="${post.id}">
+                        <i class="${userRating >= 3 ? 'fa-solid fa-star' : 'fa-regular fa-star'}"></i>
+                    </a>
+                    <a class="rating-button" data-value="4" data-id="${post.id}">
+                        <i class="${userRating >= 4 ? 'fa-solid fa-star' : 'fa-regular fa-star'}"></i>
+                    </a>
+                    <a class="rating-button" data-value="5" data-id="${post.id}">
+                        <i class="${userRating >= 5 ? 'fa-solid fa-star' : 'fa-regular fa-star'}"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="home-post-footer">
+                <a class="home-post-date">${post.date}</a>
+                
+                <div class="homePostedBy">${post.user}</div>
+            </div>
+        `;
+
 
         postsContainer.appendChild(postElement);
 
@@ -176,23 +177,59 @@ function renderPosts(posts, userRatings) {
 
         const likeElement = postElement.querySelector('.like-container');
         updateLikeButton(likeElement, post.id);
-        addButtonListener()
 
 
+        updateLikeIcon(likeElement);
+
+        addButtonListener();
     });
 }
+
+
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
     addButtonListener();
 
+    const mostLikedButton = document.getElementById('most-liked-button')
+
+    mostLikedButton.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        fetch('most-liked')
+            .then(response => response.json())
+            .then(data => {
+                renderPosts(data.mostLikedPosts, data.userRatings);
+                const likeContainers = document.querySelectorAll('.like-container');
+
+
+                likeContainers.forEach(likeElement => {
+                    if (likeElement) {
+                        updateLikeIcon(likeElement)
+                    } else {
+                        console.warn('likeElement is null');
+                    }
+                })
+
+
+            })
+            .catch(error => {
+                console.error('Error fetching most liked posts:', error);
+            });
+
+    });
+
 
     const likeContainers = document.querySelectorAll('.like-container');
     likeContainers.forEach(likeElement => {
+        // console.log('Like containers:', likeContainers);
         const postId = likeElement.querySelector('.like').dataset.id;
+        // console.log('Updating like icon for:', likeElement);
+
         updateLikeButton(likeElement, postId);
         updateLikeIcon(likeElement);
     });
-
 
 
     const searchForm = document.getElementById('search-form');
@@ -203,7 +240,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         fetch('search-posts', {
             method: 'POST',
-            body: JSON.stringify({ searchInput: searchQuery }),
+            body: JSON.stringify({searchInput: searchQuery}),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -214,17 +251,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.querySelector(".total-likes").innerHTML = data.newTotalLikes;
                 renderPosts(data.posts, data.userRatings);
 
-                addButtonListener();
 
             });
 
-
-
-
-
-
-
     });
+
+
 
 
 });

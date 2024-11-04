@@ -21,30 +21,22 @@ class HomeController extends AbstractController
      */
     public function homepage(Request $request,EntityManagerInterface $entityManager): Response
     {
-//    dd($request->get('alreadyFollowing'));
+
+
 
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
-        $allPosts = $entityManager->getRepository(Posts::class)->findAll();
 
-
-        $user = $this->getUser();
-        $userRatings = $entityManager->getRepository(Rating::class)->findBy(['user' => $user]);
-
-        // Fetch only liked post IDs for the current user
-        $likes = $entityManager->getRepository(Like::class)->findBy(['user' => $user]);
-
-
-
+        // moved to postpage
 
 
 
             return $this->render('user/home.html.twig', [
-                "posts" => $allPosts,
-                'likes' => $likes,
-                'alreadyFollowing' => $request->get('alreadyFollowing'),
-                'userRatings' => $userRatings,
+//                "posts" => $allPosts,
+//                'likes' => $likes,
+//                'alreadyFollowing' => $request->get('alreadyFollowing'),
+//                'userRatings' => $userRatings,
 
 
             ]);
@@ -77,49 +69,5 @@ class HomeController extends AbstractController
 
 
 
-
-
-    /**
-     * @Route("/search-posts", name="searched-posts", methods={"POST"})
-     */
-    public function searchedPosts(Request $request, EntityManagerInterface $entityManager): Response
-    {
-
-        $data = json_decode($request->getContent(), true);
-        $searchInput = $data['searchInput'];
-        $searchedPosts = [];
-        $userRatingsArray = [];
-
-
-
-        $user = $this->getUser();
-        $userRatings = $entityManager->getRepository(Rating::class)->findBy(['user' => $user]);
-
-
-        if ($searchInput) {
-            $searchedThing = $entityManager->getRepository(Posts::class)->searchByTitleAndText($searchInput);
-
-        }else{
-            $searchedThing = $entityManager->getRepository(Posts::class)->findAll();
-        }
-
-        foreach($searchedThing as $post){
-            $searchedPosts[] = $post->toArray();
-
-        }
-
-        foreach($userRatings as $rating){
-            $userRatingsArray[] = $rating->toArray();
-        }
-
-
-
-        return $this->json([
-            'posts' => $searchedPosts,
-            'alreadyFollowing' => $request->get('alreadyFollowing'),
-            'userRatings' => $userRatingsArray,
-
-        ]);
-    }
 
 }

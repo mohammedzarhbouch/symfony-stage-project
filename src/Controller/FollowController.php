@@ -28,7 +28,7 @@ class FollowController extends AbstractController
         $user = $this->getUser();
 
         $userId = $user->getId();
-//        dd($userId);
+
         $following = $entityManager->getRepository(Follow::class)->findBy(['followerUser' => $userId]);
 
 
@@ -89,8 +89,10 @@ class FollowController extends AbstractController
     public function goToFollowedPosts(int $id, EntityManagerInterface $entityManager): Response
     {
 
+        $user = $this->getUser();
 
         $followedUser = $entityManager->getRepository(User::class)->find($id);
+
         if (!$followedUser) {
             throw $this->createNotFoundException('User not found with id:'. $id);
         }
@@ -101,10 +103,19 @@ class FollowController extends AbstractController
         }
 
 
+        $totalLikes = array_reduce($posts, function ($sum, $post) {
+            return $sum + $post->getTotalLikes();
+        }, 0);
+
+
+
 
 
         return $this->render('post/followedUserPosts.html.twig', [
             'followingPosts' => $posts,
+            'followedUser' => $followedUser,
+            'totalLikes' => $totalLikes,
+            'user' => $user,
 
         ]);
     }

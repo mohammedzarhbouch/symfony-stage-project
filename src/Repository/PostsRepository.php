@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Follow;
 use App\Entity\Posts;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -32,6 +33,17 @@ class PostsRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findMostLikedPosts($limit = 10)
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.total_likes', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+
 
 
 

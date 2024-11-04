@@ -13,12 +13,11 @@
 {#            You are logged in as {{ app.user.email }}, <a href="{{ path('app_logout') }}">Logout</a>#}
 {#        </div>#}
 {#    {% endif %}#}
-    <div class="page-title-home">
-        <h1>USER POSTS</h1>
 
-        {% if alreadyFollowing == 1  %}
-            <a id="following-text">Already following</a>
-        {% endif %}
+
+{#        {% if alreadyFollowing == 1  %}#}
+{#            <a id="following-text">Already following</a>#}
+{#        {% endif %}#}
     </div>
 
     <div class="button-container">
@@ -26,83 +25,13 @@
         <a href="{{ path('show-posts') }}" class="home-main-buttons">Show my posts</a>
         <a href="{{ path('show-comments') }}" class="home-main-buttons">Show my Comments</a>
         <a href="{{ path('follow-list') }}" class="home-main-buttons">Follow List</a>
+        <a href="{{ path('post-page') }}" class="home-main-buttons">Post Page!</a>
 
 
 
     </div>
     <div class="home-container">
-        <div class="home-main-container">
 
-            <div class="search-bar">
-                <form id="search-form" action="{{ path('searched-posts') }}" method="post">
-                    <input class="search-input" type="text" name="searchInput" placeholder="Search posts...">
-                    <button type="submit">Search</button>
-                </form>
-            </div>
-
-
-            <div class="home-main" id="posts-container">
-                {% for post in posts %}
-                    <div class="post">
-
-                        <a class="inspect-link" href="{{ path('inspect-post', { 'id': post.id }) }}">
-                            <div class="title-data">{{ post.title }}</div>
-                        </a>
-
-                        <div class="text-data">{{ post.text }}</div>
-
-                        {% set likedPostIds = likes|map(like => like.post.id) %}
-                        <div class="like-container">
-                            <a class="like" href="{{ path('like-post', {'id': post.id}) }}" data-id="{{ post.id }}" data-like-state="{{ post.id in likedPostIds ? 'true' : 'false' }}">
-                                <i class="fa-regular fa-heart"></i>
-                            </a>
-                            <div class="total-likes">{{ post.totalLikes}}</div>
-                        </div>
-
-
-                        {% set userRating = 0 %}
-                        {% for rating in userRatings %}
-                            {% if rating.post.id == post.id %}
-                                {% set userRating = rating.score %}
-                            {% endif %}
-                        {% endfor %}
-
-                        <a class="rating-text">Rate this post!</a>
-                        <div class="ratings" data-user-rating="{{ userRating }}">
-                            <div class="rating-button-container">
-                                <a class="rating-button" data-value="1" data-id="{{ post.id }}">
-                                    <i class="{{ userRating >= 1 ? 'fa-solid fa-star' : 'fa-regular fa-star' }}"></i>
-                                </a>
-                                <a class="rating-button" data-value="2" data-id="{{ post.id }}">
-                                    <i class="{{ userRating >= 2 ? 'fa-solid fa-star' : 'fa-regular fa-star' }}"></i>
-                                </a>
-                                <a class="rating-button" data-value="3" data-id="{{ post.id }}">
-                                    <i class="{{ userRating >= 3 ? 'fa-solid fa-star' : 'fa-regular fa-star' }}"></i>
-                                </a>
-                                <a class="rating-button" data-value="4" data-id="{{ post.id }}">
-                                    <i class="{{ userRating >= 4 ? 'fa-solid fa-star' : 'fa-regular fa-star' }}"></i>
-                                </a>
-                                <a class="rating-button" data-value="5" data-id="{{ post.id }}">
-                                    <i class="{{ userRating >= 5 ? 'fa-solid fa-star' : 'fa-regular fa-star' }}"></i>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="home-post-footer">
-                            <a class="home-post-date">{{ post.date|date('d-m-Y') }}</a>
-                            <div class="popup">
-                                <a>Posts: {{ post.user.postCount }}</a>
-                                <a>Comments: {{ post.user.commentCount }}</a>
-                            </div>
-                            <div class="homePostedBy">{{ post.user.username }}</div>
-                        </div>
-
-                    </div>
-                    {% else %}
-                    <p>No posts available.</p>
-                {% endfor %}
-            </div>
-        </div>
     </div>
 
 
