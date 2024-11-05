@@ -354,7 +354,7 @@ class PostController extends AbstractController
     public function followingPosts(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
-    // dit is een test
+
         $userRatings = $entityManager->getRepository(Rating::class)->findBy(['user' => $user]);
 
         $following = $entityManager->getRepository(Follow::class)->findBy(['followerUser' => $user]);
