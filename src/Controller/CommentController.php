@@ -152,22 +152,7 @@ class CommentController extends AbstractController
     }
 
 
-//
-//    public function deleteCommentFromPost(int $id, Request $request, EntityManagerInterface $entityManager): Response
-//    {
-//        $comment = $entityManager->getRepository(Comment::class)->find($id);
-//
-//        $user = $this->getUser();
-//
-//        $user->setCommentCount($user->getCommentCount() - 1);
-//
-//
-//
-//        $entityManager->remove($comment);
-//        $entityManager->flush();
-//
-//        return $this->redirectToRoute('show-comments');
-//    }
+
 
 
     /**
@@ -187,7 +172,7 @@ class CommentController extends AbstractController
         if ($alreadyVoted) {
 
             if ($alreadyVoted->getVoteType() === $voteType) {
-//                return $this->redirectToRoute('inspect-post', ['id' => $comment->getPost()->getId()]);
+
                 exit();
             }
 

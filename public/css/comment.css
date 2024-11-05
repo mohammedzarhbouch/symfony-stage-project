@@ -1,22 +1,92 @@
 
 
-
-
-
+html, body {
+    height: 100%;
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
 .inspect-container {
 
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    margin: 20px;
+    flex-direction: row;
+    /*margin: 20px;*/
+    padding-top: 100px;
+    /*padding: 100px 100px 100px 100px;*/
+    /*margin-left: 200px;*/
+    /*margin-right: 200px;*/
+    /*overflow: hidden;*/
+
+
+}
+
+
+
+@media (max-width: 1400px) {
+    .inspect-container {
+        padding: 100px 5px 5px 5px;
+
+
+    }
+}
+
+@media (max-width: 1350px) {
+    .inspect-container {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+}
+
+@media (max-width: 1350px) {
+    .inspect-container .inspect-post-container {
+        margin-right: 0px;
+    }
+}
+
+
+.full-comment-container {
+    width: 800px;
+    height: auto;
+    border: solid white 2px;
+    border-radius: 20px;
+}
+
+.test-container {
+    border-top: solid white 2px;
+    width: auto;
+    max-height: 600px;
+    overflow-y: auto;
+    /*border-radius: 20px;*/
 }
 
 
 
 
+.test-container::-webkit-scrollbar {
+    width: 12px;
+    margin-right: 5px;
+
+}
+
+/*.full-comment-container::-webkit-scrollbar-track {*/
+/*    background: white; !* Track color *!*/
+/*    border-radius: 10px; */
+/*}*/
+
+.test-container::-webkit-scrollbar-thumb {
+    background-color: #888; /* Scrollbar color */
+    border-radius: 10px;
+    border: 2px solid #333; /* Optional: space around scrollbar thumb */
+
+}
+
 .inspect-post-container {
-margin: 20px;
+    margin-right: 250px;
 }
 
 
@@ -44,13 +114,16 @@ margin: 20px;
 
 .comment-form-container {
     background-color: transparent;
-    width: 60%;
+    width: 100%;
     height: 100px;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .comment-submit {
-    float: right;
+
     color: white;
     margin: 10px;
     background-color: blue;
@@ -59,8 +132,9 @@ margin: 20px;
     box-shadow: none;
     font-size: larger;
     border-radius: 5px;
-    transition: ease-in-out .2s;
+    transition: ease-in-out .1s;
     border: none;
+    /*position: fixed;*/
 
 }
 
@@ -71,68 +145,80 @@ margin: 20px;
 
 
 .comment-input {
-    height: 30px;
+    max-height: 40px;
+    min-height: 40px;
     border: none;
     background-color: transparent;
     border-bottom: 2px solid grey;
-    border-left: 2px solid grey;
-    transition: ease-in-out .2s;
+    transition: ease-in-out .1s;
     color: white;
-    width: 100%;
+    min-width: 400px;
+    max-width: 600px;
     font-size: large;
     margin-top: 50px;
-    text-indent: 5px;
+    padding-left: 15px;
+
+
 
 }
 
 .comment-input:focus {
-
     outline: none;
-    border-bottom: 2px solid white;
-    border-left: 2px solid white;
-    background-color: grey;
+    border-bottom: 2px solid white; /* Change color without moving */
+    box-shadow: -2px 0 0 white;
+    background-color: transparent;
+    /*margin-left: 10px;*/
 
 }
 
-::placeholder {
+/* Default placeholder color */
+.comment-input::placeholder {
     color: white;
+    transition: color 0.2s ease-in-out;
+}
+
+/* Placeholder color on focus */
+.comment-input:focus::placeholder {
+    color: grey;
 }
 
 .comment-container {
-    width: 60%;
-
-    background-color: transparent;
+    width: auto;
+    display: flex;
+    align-items: center;
     color: white;
     margin-bottom: 20px;
 }
 
 .comment-data {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 100%;
+
     padding-bottom: 5px;
     /*border-top: 2px solid black;*/
-    border-bottom: 2px solid grey;
-    margin-top: 20px;
+    /*border: 2px solid grey;*/
+    margin-top: 40px;
+    margin-bottom: 60px;
 }
 
 .comment-username {
-    margin: 10px 20px 0 20px;
+    /*margin: 10px 20px 0 20px;*/
 }
 
 .comment-date {
-    margin: 10px 20px 0px 20px;
+    /*margin: 10px 20px 0px 20px;*/
 }
 
 .comment-box {
     /*border: 2px solid blue;*/
-    margin: 30px;
-    height: 50px;
-    padding: 15px;
+    margin-left: 30px;
+    margin-top: 10px;
+    /*height: 50px;*/
+    padding-left: 20px;
     /*background-color: grey;*/
-    border-left: 1px solid white;
-    border-bottom: 1px solid white;
-
+    /*border: 1px solid ;*/
+    color: white;
 }
 
 .edit-comment-button {
@@ -161,7 +247,8 @@ margin: 20px;
 
 .vote-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    margin-left: 10px;
 }
 
 .vote-count {
@@ -175,13 +262,13 @@ margin: 20px;
 .vote-button {
     background-color: transparent;
     color: white;
-    padding: 0px;
+    /*padding: 0px;*/
     border-radius: 50%;
     font-size: large;
     box-shadow: none;
     border: none;
     transition: ease-in-out .1s;
-    margin: 2px;
+    margin: 5px;
 }
 
 
@@ -196,10 +283,29 @@ margin: 20px;
 
 .vote-button.voted {
     color: green;
+
 }
 
 /* Styling for voted down */
 .vote-button.voted[data-value="0"] {
     color: red;
+
 }
 
+.comment-profile-picture {
+    width: 80px;
+    height: 80px;
+    margin-top: 20px;
+    margin-left: 50px;
+    border-radius: 10px; /* Make the image circular */
+    overflow: hidden; /* Hide overflow if the image is too large */
+    display: flex; /* Center image */
+    justify-content: center; /* Center horizontally */
+    align-items: center;
+}
+
+.comment-profile-picture img {
+    width: 100%; /* Scale the image to fill the container */
+    height: 100%; /* Maintain aspect ratio */
+    object-fit: cover; /* Cover the container while preserving aspect ratio */
+}

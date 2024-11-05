@@ -74,91 +74,105 @@
         </div>
     </div>
 
+    <div class="full-comment-container">
+        <div class="comment-form-container">
 
-    <div class="comment-form-container">
+            <form action="{{ path('postComment', {'id': post.id}) }}" method="post">
 
-        <form action="{{ path('postComment', {'id': post.id}) }}" method="post">
+                <textarea class="comment-input" name="commentText" placeholder=" Enter your comment here..." required autocomplete="off"></textarea>
+                <button class="comment-submit" type="submit">Submit</button>
+            </form>
 
-            <input class="comment-input" name="commentText" placeholder="Enter your comment here..." required autocomplete="off">
-            <button class="comment-submit" type="submit">Submit</button>
-        </form>
+        </div>
+        <div class="test-container">
+            {% if post.comments is empty %}
+                <p>No comments yet.</p>
+            {% else %}
+                {% for comment in post.comments|reverse %}
+
+
+                    <div class="comment-data">
+
+                        <div class="comment-container">
+
+                            <div class="comment-profile-picture">
+                                {% if comment.user.imageFileName is not null %}
+                                    <img src="{{ asset(comment.user.imagePath) }}" alt="Profile Picture">
+                                {% else %}
+                                    <img src="{{ asset('uploads/profile_image/default.jpg') }}" alt="default picture">
+                                {% endif %}
+                            </div>
+
+                            <div class="comment-username">{{ comment.commentAuthor }}</div>
+                            <div class="comment-date">Posted {{ comment.createdAt| ago }}</div>
+
+                            {% if comment.updatedAt is null %}
+
+                            {% else %}
+                                <div class="comment-edit-date">
+                                    *edited {{ comment.updatedAt| ago }}*
+                                </div>
+
+                            {% endif %}
+
+                            {% if app.user and app.user.username == comment.commentAuthor %}
+                                <form action="{{ path('edit-post-comments', {'id': comment.id}) }}" method="post">
+                                    <button class="edit-comment-button">edit</button>
+                                </form>
+
+                                <form action="{{ path('delete-comment', {'id': comment.id}) }}" method="post">
+                                    <button class="edit-comment-button">Delete</button>
+                                </form>
 
 
 
+                            {% endif %}
+
+                            {% set voteUp = false %}
+                            {% set voteDown = false %}
+
+                            {% for vote in votesByUser %}
+                                {% if vote.comment.id == comment.id %}
+                                    {% if vote.voteType == 1 %}
+                                        {% set voteUp = true %}
+                                    {% elseif vote.voteType == 0 %}
+                                        {% set voteDown = true %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+
+                            <div class="vote-container">
+
+                                <form action="{{ path('vote', {'id': comment.id, 'voteType': 1}) }}" method="post" class="vote-form">
+                                    <button class="vote-button {% if voteUp %} voted {% endif %}" data-value="1" data-id="{{ comment.id }}" type="submit">
+                                        <i class="fa-solid fa-arrow-up"></i>
+                                    </button>
+                                </form>
+
+                                <form action="{{ path('vote', {'id':comment.id, 'voteType': 0}) }}" method="post" class="vote-form">
+                                    <button class="vote-button {% if voteDown %} voted {% endif %}" data-value="0" data-id="{{ comment.id }}" type="submit">
+                                        <i class="fa-solid fa-arrow-down"></i>
+                                    </button>
+                                </form>
+
+                            </div>
 
 
-    </div>
+                            <span class="vote-count" data-id="{{ comment.id }}">{{ comment.voteScore }}</span>
 
-
-    {% if post.comments is empty %}
-        <p>No comments yet.</p>
-    {% else %}
-        {% for comment in post.comments|reverse %}
-            <div class="comment-container">
-                <div class="comment-data">
-                    <div class="comment-username">{{ comment.commentAuthor }}</div>
-                    <div class="comment-date">Posted {{ comment.createdAt| ago }}</div>
-
-                    {% if comment.updatedAt is null %}
-
-                    {% else %}
-                        <div class="comment-edit-date">
-                            *edited {{ comment.updatedAt| ago }}*
                         </div>
 
-                    {% endif %}
-
-                    {% if app.user and app.user.username == comment.commentAuthor %}
-                        <form action="{{ path('edit-post-comments', {'id': comment.id}) }}" method="post">
-                            <button class="edit-comment-button">edit</button>
-                        </form>
-
-                        <form action="{{ path('delete-comment', {'id': comment.id}) }}" method="post">
-                            <button class="edit-comment-button">Delete</button>
-                        </form>
-
-
-
-                    {% endif %}
-
-                    {% set voteUp = false %}
-                    {% set voteDown = false %}
-
-                    {% for vote in votesByUser %}
-                        {% if vote.comment.id == comment.id %}
-                            {% if vote.voteType == 1 %}
-                                {% set voteUp = true %}
-                            {% elseif vote.voteType == 0 %}
-                                {% set voteDown = true %}
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
-
-                    <div class="vote-container">
-
-                        <form action="{{ path('vote', {'id': comment.id, 'voteType': 1}) }}" method="post" class="vote-form">
-                            <button class="vote-button {% if voteUp %} voted {% endif %}" data-value="1" data-id="{{ comment.id }}" type="submit">
-                                <i class="fa-solid fa-arrow-up"></i>
-                            </button>
-                        </form>
-
-                        <form action="{{ path('vote', {'id':comment.id, 'voteType': 0}) }}" method="post" class="vote-form">
-                            <button class="vote-button {% if voteDown %} voted {% endif %}" data-value="0" data-id="{{ comment.id }}" type="submit">
-                                <i class="fa-solid fa-arrow-down"></i>
-                            </button>
-                        </form>
-
+                        <div class="comment-box">{{ comment.commentText }}</div>
                     </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        </div>
 
 
-                    <span class="vote-count" data-id="{{ comment.id }}">{{ comment.voteScore }}</span>
 
-                </div>
 
-                <div class="comment-box">{{ comment.commentText }}</div>
-            </div>
-        {% endfor %}
-    {% endif %}
 
 
 </div>

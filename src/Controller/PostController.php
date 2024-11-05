@@ -324,13 +324,13 @@ class PostController extends AbstractController
         $mostLikedPosts = $entityManager->getRepository(Posts::class)->findMostLikedPosts(10);
 
         $userRatingsArray = [];
-        $mostLikedPostsArray = [];
-
-
 
         foreach($userRatings as $rating){
             $userRatingsArray[] = $rating->toArray();
         }
+
+
+        $mostLikedPostsArray = [];
 
         foreach($mostLikedPosts as $post){
             $mostLikedPostsArray[] = $post->toArray();
@@ -340,7 +340,6 @@ class PostController extends AbstractController
 
         return $this->json([
             'mostLikedPosts' => $mostLikedPostsArray,
-            'alreadyFollowing' => $request->get('alreadyFollowing'),
             'userRatings' => $userRatingsArray,
 
         ]);
@@ -349,39 +348,45 @@ class PostController extends AbstractController
 
 
     /**
-     * @Route ("/following-posts", name="/following-posts")
+     * @Route ("/following-posts", name="following-posts")
      */
 
     public function followingPosts(Request $request, EntityManagerInterface $entityManager): Response
     {
-
         $user = $this->getUser();
-        $userId = $user->getId();
-        $following = $entityManager->getRepository(Follow::class)->findBy(['followerUser' => $userId]);
+
         $userRatings = $entityManager->getRepository(Rating::class)->findBy(['user' => $user]);
-        $likes = $entityManager->getRepository(Like::class)->findBy(['user' => $user]);
+
+        $following = $entityManager->getRepository(Follow::class)->findBy(['followerUser' => $user]);
 
 
         $followedUserIds = [];
-        foreach ($following as $follow) {
+
+        foreach($following as $follow){
             $followedUserIds[] = $follow->getFollowedUser()->getId();
         }
 
-        if (!empty($followedUserIds)) {
-            $followingPosts = $entityManager->getRepository(Posts::class)->createQueryBuilder('p')
-                ->where('p.user IN (:followedUserIds)')
-                ->setParameter('followedUserIds', $followedUserIds)
-                ->getQuery()
-                ->getResult();
-        } else {
-            $followingPosts = []; // No followed users, so no posts
+
+        $userRatingsArray = [];
+
+        foreach($userRatings as $rating){
+            $userRatingsArray[] = $rating->toArray();
         }
 
 
-        return $this->render('post/followingPosts.html.twig', [
-            'followingPosts' => $followingPosts,
-            'userRatings' => $userRatings,
-            'likes' => $likes,
+
+        $postsFromFollowing = $entityManager->getRepository(Posts::class)->findBy(['user' => $followedUserIds]);
+
+
+
+        $postsArray = array_map(function ($post) {
+            return $post->toArray();
+        }, $postsFromFollowing);
+
+
+        return $this->json([
+            'followedPosts' => $postsArray,
+            'userRatings' => $userRatingsArray,
 
         ]);
     }

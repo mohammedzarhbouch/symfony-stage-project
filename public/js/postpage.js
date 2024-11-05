@@ -167,7 +167,6 @@ function renderPosts(posts, userRatings) {
                 <div class="homePostedBy">${post.user}</div>
             </div>
         `;
-    console.log(post.date)
 
         postsContainer.appendChild(postElement);
 
@@ -192,8 +191,10 @@ function renderPosts(posts, userRatings) {
 document.addEventListener("DOMContentLoaded", () => {
     addButtonListener();
 
-    const mostLikedButton = document.getElementById('most-liked-button')
 
+
+    // most liked posts filter button
+    const mostLikedButton = document.getElementById('most-liked-button')
     mostLikedButton.addEventListener('click', function (event) {
         event.preventDefault();
 
@@ -219,6 +220,41 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
     });
+
+
+    //following user posts filter button
+    const followingButton = document.getElementById('following-button')
+    followingButton.addEventListener('click', function(event) {
+        event.preventDefault()
+
+        fetch('following-posts')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.followedPosts)
+                renderPosts(data.followedPosts, data.userRatings)
+
+                const likeContainers = document.querySelectorAll('.like-container');
+
+
+                likeContainers.forEach(likeElement => {
+                    if (likeElement) {
+                        updateLikeIcon(likeElement)
+                    } else {
+                        console.warn('likeElement is null');
+                    }
+                })
+
+
+
+            })
+
+            .catch(error => {
+                console.error("TEST", error)
+            })
+    })
+
+
+
 
 
     const likeContainers = document.querySelectorAll('.like-container');
