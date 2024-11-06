@@ -48,11 +48,18 @@ class Posts
     #[ORM\Column]
     private ?int $total_likes = 0;
 
+    #[ORM\OneToMany(targetEntity: View::class, mappedBy: 'post', orphanRemoval: true)]
+    private Collection $views;
+
+    #[ORM\Column(type: Types::INTEGER, options: ['default' => 0])]
+    private ?int $total_views = 0;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->ratings = new ArrayCollection();
         $this->likes = new ArrayCollection();
+        $this->views = new ArrayCollection();
     }
 
 
@@ -78,6 +85,7 @@ class Posts
             'total_rating_score' => $this->total_rating_score,
             'average_rating' => $this->averageRating(),
             'total_likes' => $this->total_likes,
+            'total-views' => $this->total_views,
 
         ];
     }
@@ -264,6 +272,48 @@ class Posts
     public function setTotalLikes(int $total_likes): static
     {
         $this->total_likes = $total_likes;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, View>
+     */
+    public function getViews(): Collection
+    {
+        return $this->views;
+    }
+
+    public function addView(View $view): static
+    {
+        if (!$this->views->contains($view)) {
+            $this->views->add($view);
+            $view->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeView(View $view): static
+    {
+        if ($this->views->removeElement($view)) {
+            // set the owning side to null (unless already changed)
+            if ($view->getPost() === $this) {
+                $view->setPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTotalViews(): ?int
+    {
+        return $this->total_views;
+    }
+
+    public function setTotalViews(int $total_views): static
+    {
+        $this->total_views = $total_views;
 
         return $this;
     }

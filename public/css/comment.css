@@ -309,3 +309,31 @@ html, body {
     height: 100%; /* Maintain aspect ratio */
     object-fit: cover; /* Cover the container while preserving aspect ratio */
 }
+
+
+/*my comments/show comments page*/
+
+.my-comment-container {
+    border: 2px solid white;
+    width: 800px;
+    color: white;
+    height: 400px;
+}
+
+.my-comment-data {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.my-comment-username,
+.my-comment-date,
+.my-comment-edit {
+    display: flex;
+    align-items: center;
+    /*border: 2px solid white;*/
+    height: 40px;
+    width: 150px;
+    margin-left: 20px;
+
+}

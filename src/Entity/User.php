@@ -64,6 +64,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $likes;
 
+    #[ORM\OneToMany(targetEntity: View::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $views;
+
 
 
     public function __construct()
@@ -76,6 +79,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->ratings = new ArrayCollection();
         $this->votes = new ArrayCollection();
         $this->likes = new ArrayCollection();
+        $this->views = new ArrayCollection();
 
 
 
@@ -432,6 +436,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($like->getUser() === $this) {
                 $like->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, View>
+     */
+    public function getViews(): Collection
+    {
+        return $this->views;
+    }
+
+    public function addView(View $view): static
+    {
+        if (!$this->views->contains($view)) {
+            $this->views->add($view);
+            $view->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeView(View $view): static
+    {
+        if ($this->views->removeElement($view)) {
+            // set the owning side to null (unless already changed)
+            if ($view->getUser() === $this) {
+                $view->setUser(null);
             }
         }
 

@@ -9,11 +9,12 @@
         <p>No comments yet.</p>
     {% else %}
         {% for comment in myComments|reverse %}
-            <div class="comment-container">
-                <div class="comment-data">
-                    <div class="comment-username">{{ comment.commentAuthor }}</div>
-                    <div class="comment-date">{{ comment.createdAt|ago }}</div>
-                    <div class="comment-edit">
+
+            <div class="my-comment-container">
+                <div class="my-comment-data">
+                    <div class="my-comment-username">{{ comment.commentAuthor }}</div>
+                    <div class="my-comment-date">{{ comment.createdAt|ago }}</div>
+                    <div class="my-comment-edit">
                         <form action="{{ path('edit-comments', {'id': comment.id}) }}" method="get">
                         <button>test</button>
                         </form>

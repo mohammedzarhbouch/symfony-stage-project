@@ -4,9 +4,9 @@
 
 function updateLikeIcon(likeElement) {
 
-const likeButton = likeElement.querySelector('.like');
-const likeIcon = likeButton.querySelector('i')
-const likeState = likeButton.getAttribute('data-like-state')
+    const likeButton = likeElement.querySelector('.like');
+    const likeIcon = likeButton.querySelector('i')
+    const likeState = likeButton.getAttribute('data-like-state')
 
     if (likeState === 'true') {
         likeIcon.classList.remove('fa-regular')
@@ -37,23 +37,21 @@ function updateLikeButton(likeElement, postId) {
         })
             .then(response => response.json())
             .then(data => {
-                if (data.success) {
-                    // Update the total likes count
-                    totalLikesElement.textContent = data.newTotalLikes;
+                // Update the total likes count
+                totalLikesElement.textContent = data.newTotalLikes;
 
-                    const currentState = likeButton.getAttribute('data-like-state') === 'true';
-                    likeButton.setAttribute('data-like-state', !currentState);
+                const currentState = likeButton.getAttribute('data-like-state') === 'true';
+                likeButton.setAttribute('data-like-state', !currentState);
+                updateLikeIcon(likeElement);
 
-
-                    updateLikeIcon(likeElement);
-
-                }
             })
             .catch(error => {
                 console.error('Error:', error);
             });
     });
 }
+
+
 
 function updateStars(ratingsElement, newRating) {
     const ratingButtons = ratingsElement.querySelectorAll('.rating-button');
@@ -75,13 +73,13 @@ function updateStars(ratingsElement, newRating) {
 
 // adds a listener to the rating buttons so when clicked they change the rating in the db
 function addButtonListener() {
+
     const ratingButtons = document.querySelectorAll('.rating-button');
 
     ratingButtons.forEach(button => {
         button.addEventListener('click', () => {
             let ratingValue = button.getAttribute('data-value');
             let id = button.getAttribute('data-id');
-
 
             fetch(`/test-project/public/rating/${id}`, {
                 method: 'POST',
@@ -108,6 +106,7 @@ function addButtonListener() {
 // return the searched post and render them :)
 function renderPosts(posts, userRatings) {
     const postsContainer = document.getElementById('posts-container');
+
     postsContainer.innerHTML = '';
 
     posts.forEach(post => {
@@ -176,8 +175,6 @@ function renderPosts(posts, userRatings) {
 
         const likeElement = postElement.querySelector('.like-container');
         updateLikeButton(likeElement, post.id);
-
-
         updateLikeIcon(likeElement);
 
         addButtonListener();
@@ -193,33 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    // most liked posts filter button
-    const mostLikedButton = document.getElementById('most-liked-button')
-    mostLikedButton.addEventListener('click', function (event) {
-        event.preventDefault();
 
-        fetch('most-liked')
-            .then(response => response.json())
-            .then(data => {
-                renderPosts(data.mostLikedPosts, data.userRatings);
-                const likeContainers = document.querySelectorAll('.like-container');
-
-
-                likeContainers.forEach(likeElement => {
-                    if (likeElement) {
-                        updateLikeIcon(likeElement)
-                    } else {
-                        console.warn('likeElement is null');
-                    }
-                })
-
-
-            })
-            .catch(error => {
-                console.error('Error fetching most liked posts:', error);
-            });
-
-    });
 
 
     //following user posts filter button
@@ -253,15 +224,40 @@ document.addEventListener("DOMContentLoaded", () => {
             })
     })
 
+    // most liked posts filter button
+    const mostLikedButton = document.getElementById('most-liked-button')
+    mostLikedButton.addEventListener('click', function (event) {
+        event.preventDefault();
 
+        fetch('most-liked')
+            .then(response => response.json())
+            .then(data => {
+                renderPosts(data.mostLikedPosts, data.userRatings);
+
+
+                const likeContainers = document.querySelectorAll('.like-container');
+                likeContainers.forEach(likeElement => {
+                    if (likeElement) {
+                        updateLikeIcon(likeElement)
+                    } else {
+                        console.warn('likeElement is null');
+                    }
+                })
+
+
+            })
+            .catch(error => {
+                console.error('Error fetching most liked posts:', error);
+            });
+
+    });
 
 
 
     const likeContainers = document.querySelectorAll('.like-container');
     likeContainers.forEach(likeElement => {
-        // console.log('Like containers:', likeContainers);
+
         const postId = likeElement.querySelector('.like').dataset.id;
-        // console.log('Updating like icon for:', likeElement);
 
         updateLikeButton(likeElement, postId);
         updateLikeIcon(likeElement);
