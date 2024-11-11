@@ -26,14 +26,8 @@ class FollowController extends AbstractController
     {
 
         $user = $this->getUser();
-
-        $userId = $user->getId();
-
-        $following = $entityManager->getRepository(Follow::class)->findBy(['followerUser' => $userId]);
-
-
-
-//        dd($following);
+//        $userId = $user->getId();
+        $following = $entityManager->getRepository(Follow::class)->findBy(['followerUser' => $user]);
 
 
         return $this->render('user/followList.html.twig', [
@@ -75,11 +69,14 @@ class FollowController extends AbstractController
 
         $entityManager->persist($follow);
         $entityManager->flush();
-        return $this->redirectToRoute('home');
+        return $this->redirectToRoute('follow-list');
+        } else {
+            $entityManager->remove($existingFollow);
+            $entityManager->flush();
         }
 
 
-        return $this->redirectToRoute('home', ['alreadyFollowing' => true]);
+        return $this->redirectToRoute('follow-list', ['alreadyFollowing' => true]);
     }
 
 
@@ -93,6 +90,8 @@ class FollowController extends AbstractController
 
         $followedUser = $entityManager->getRepository(User::class)->find($id);
 
+
+
         if (!$followedUser) {
             throw $this->createNotFoundException('User not found with id:'. $id);
         }
@@ -102,12 +101,18 @@ class FollowController extends AbstractController
             return new Response('No posts found for user with ID: ' . $id);
         }
 
-
+        // adds all the likes the logged-in user has received and saves it in the variable.
         $totalLikes = array_reduce($posts, function ($sum, $post) {
             return $sum + $post->getTotalLikes();
         }, 0);
+//        dd($totalLikes);
+
+        $totalViews = array_reduce($posts, function ($sum, $post) {
+            return $sum + $post->getTotalViews();
+        });
 
 
+        $postCount = $followedUser->getPostCount();
 
 
 
@@ -115,7 +120,9 @@ class FollowController extends AbstractController
             'followingPosts' => $posts,
             'followedUser' => $followedUser,
             'totalLikes' => $totalLikes,
+            'totalViews' => $totalViews,
             'user' => $user,
+            'postCount' => $postCount,
 
         ]);
     }

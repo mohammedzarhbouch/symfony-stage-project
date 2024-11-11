@@ -11,7 +11,7 @@
         "doctrine/dbal": "^3",
         "doctrine/doctrine-bundle": "^2.13",
         "doctrine/doctrine-migrations-bundle": "^3.3",
-        "doctrine/orm": "^3.2",
+        "doctrine/orm": "^3.3",
         "eschmar/time-ago-bundle": "v2.0.0",
         "knplabs/knp-time-bundle": "^2.4",
         "sensio/framework-extra-bundle": "*",

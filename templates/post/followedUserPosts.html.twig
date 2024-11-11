@@ -3,6 +3,38 @@
 {% block body %}
 
     <div class="container-for-all">
+
+            <div class="user-information-container">
+                <span> USER INFORMATION </span>
+
+                <div class="user-information"> {{ followedUser.username }}</div>
+                <div class="user-information" >Posts: {{ postCount }}</div>
+                <div class="user-information">Total Views:{{ totalViews }}</div>
+                <div class="user-information">Total Likes: {{ totalLikes }}</div>
+
+
+
+                {% if 'ROLE_ADMIN' in user.roles %}
+                <div class="user-information">
+                    {% for role in followedUser.roles %}
+                        {% if role == 'ROLE_USER' %}
+                            Roles:
+                            <span>user</span>
+                        {% elseif role == 'ROLE_ADMIN' %}
+                            <span>admin</span>
+                        {% else %}
+                            <span>{{ role }}</span>
+                        {% endif %}
+
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="user-information">Total Comments: {{ followedUser.commentCount}} </div>
+
+            </div>
+
+
         <div class="big-post-container">
 
             {% for post in followingPosts %}
@@ -29,32 +61,6 @@
                 <div>No posts found.</div>
             {% endfor %}
         </div>
-            <div class="user-information-container">
-                <span> USER INFORMATION </span>
-
-                <div class="user-information"> {{ followedUser.username }}</div>
-                <div class="user-information">Total Likes: {{ totalLikes }}</div>
-
-                {% if 'ROLE_ADMIN' in user.roles %}
-                <div class="user-information">
-                    {% for role in followedUser.roles %}
-                        {% if role == 'ROLE_USER' %}
-                            Roles:
-                            <span>user</span>
-                        {% elseif role == 'ROLE_ADMIN' %}
-                            <span>admin</span>
-                        {% else %}
-                            <span>{{ role }}</span>
-                        {% endif %}
-
-                    {% endfor %}
-                </div>
-                {% endif %}
-
-                <div class="user-information">Commented {{ followedUser.commentCount}} Times</div>
-
-            </div>
-
 
     </div>
 {% endblock %}

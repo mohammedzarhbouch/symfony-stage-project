@@ -6,7 +6,10 @@
 
 
     {% if myComments is empty %}
-        <p>No comments yet.</p>
+        <div class="follow-container">
+            <p class="no-comments-yet">No comments yet.</p>
+        </div>
+
     {% else %}
         {% for comment in myComments|reverse %}
 

@@ -7,8 +7,10 @@ use App\Entity\Comment;
 use App\Entity\Follow;
 use App\Entity\Posts;
 use App\Entity\Rating;
+use App\Entity\View;
 use App\Entity\Vote;
 use App\Entity\Like;
+
 use App\Form\PostFormType;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,21 +31,18 @@ class PostController extends AbstractController
      * @Route("/post-page", name="post-page")
      */
 
-    public function postpage(Request $request, EntityManagerInterface $entityManager): Response
+    public function postpage( Request $request, EntityManagerInterface $entityManager): Response
     {
 
         $allPosts = $entityManager->getRepository(Posts::class)->findAll();
+
         $alreadyFollowing = $request->get('alreadyFollowing');
 
         $user = $this->getUser();
         $userRatings = $entityManager->getRepository(Rating::class)->findBy(['user' => $user]);
 
-        // Fetch only liked post IDs for the current user
         $likes = $entityManager->getRepository(Like::class)->findBy(['user' => $user]);
-
-
-
-
+//        dd($likes);
 
 
         return $this->render('post/postpage.html.twig', [
@@ -52,6 +51,7 @@ class PostController extends AbstractController
             'userRatings' => $userRatings,
             'likes' => $likes,
             'alreadyFollowing' => $alreadyFollowing,
+
 
 
         ]);
@@ -72,8 +72,6 @@ class PostController extends AbstractController
     {
         $post = new Posts();
         $formPost = $this->createForm(PostFormType::class, $post);
-        
-
 
         $formPost->handleRequest($request);
 
@@ -169,8 +167,32 @@ class PostController extends AbstractController
 
 
 
+    public function addView(int $postId, EntityManagerInterface $entityManager, $user): void
+    {
+        $post = $entityManager->getRepository(Posts::class)->find($postId);
+        $alreadyViewed = $entityManager->getRepository(View::class)->findOneBy([
+            'post' => $post,
+            'user' => $user
+        ]);
 
-        // FUNCTION 4 (INSPECT) ALSO RETRIEVES COMMENTS !!!!
+        if (!$alreadyViewed) {
+            $viewed = new View();
+            $viewed->setPost($post);
+            $viewed->setUser($user);
+            $viewed->setCreatedAt(new \DateTime("now", new \DateTimeZone("Europe/Amsterdam")));
+
+            //adds 1 to total views
+            $oldTotalViews = $post->getTotalViews();
+            $post->setTotalViews($oldTotalViews + 1);
+
+            $entityManager->persist($post);
+            $entityManager->persist($viewed);
+            $entityManager->flush();
+        }
+    }
+
+
+    // FUNCTION 4 (INSPECT) ALSO RETRIEVES COMMENTS !!!!
 
     /**
      * @Route("/inspect-post/{id}", name="inspect-post")
@@ -189,7 +211,13 @@ class PostController extends AbstractController
             'user' => $user,
             'comment' => $comments
         ]);
+
         $likes = $entityManager->getRepository(Like::class)->findBy(['user' => $user]);
+
+        // add view function
+        $this->addView($id, $entityManager, $user);
+        $totalViews = $post->getTotalViews();
+
 
 
 
@@ -198,6 +226,7 @@ class PostController extends AbstractController
             'userRatings' => $userRatings,
             'votesByUser' => $votesByUser,
             'likes' => $likes,
+            'totalViews' => $totalViews,
 
         ]);
     }
@@ -313,8 +342,8 @@ class PostController extends AbstractController
     /**
      * @Route("/most-liked", name="most-liked", methods={"GET"})
      */
-
-    public function mostLiked(Request $request, EntityManagerInterface $entityManager): Response
+    // filter button
+    public function mostLiked(EntityManagerInterface $entityManager): Response
     {
 
 
@@ -350,8 +379,8 @@ class PostController extends AbstractController
     /**
      * @Route ("/following-posts", name="following-posts")
      */
-
-    public function followingPosts(Request $request, EntityManagerInterface $entityManager): Response
+    // filter button
+    public function followingPosts(EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
 

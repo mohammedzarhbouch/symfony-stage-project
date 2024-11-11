@@ -3,9 +3,9 @@
 {% block title %}My Posts{% endblock %}
 
 {% block body %}
-    <div class="page-title">
-        <h1>Show My Posts</h1>
-    </div>
+{#    <div class="page-title">#}
+{#        <h1>Show My Posts</h1>#}
+{#    </div>#}
 
     <div class="myposts-container">
         <div class="myposts-main">
@@ -39,7 +39,11 @@
                     </div>
                 </div>
             {% else %}
-                <p>No posts available.</p>
+
+
+                    <p class="no-posts-yet">No posts available.</p>
+
+
             {% endfor %}
         </div>
     </div>

@@ -6,19 +6,42 @@ html, body {
     padding: 0; /* Remove default padding */
     overflow-x: hidden; /* Prevent horizontal scrolling */
 }
+
+
+
+
+
+.inspect-back-button {
+    background-color: blue;
+    width: 60px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-left: 5px;
+    border-radius: 5px;
+    transition: ease-in-out .2s;
+    text-decoration: none;
+    color: white;
+}
+
+.inspect-back-button:hover {
+    background-color: #5eb5e0;
+    color: black;
+
+    cursor: pointer;
+
+}
+
+
 .inspect-container {
 
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    /*margin: 20px;*/
     padding-top: 100px;
-    /*padding: 100px 100px 100px 100px;*/
-    /*margin-left: 200px;*/
-    /*margin-right: 200px;*/
-    /*overflow: hidden;*/
-
 
 }
 
@@ -39,6 +62,9 @@ html, body {
         align-items: center;
 
     }
+    .full-comment-container {
+        margin-top: 100px;
+    }
 
 }
 
@@ -56,10 +82,10 @@ html, body {
     border-radius: 20px;
 }
 
-.test-container {
+.posted-comments-container {
     border-top: solid white 2px;
     width: auto;
-    max-height: 600px;
+    height: 500px;
     overflow-y: auto;
     /*border-radius: 20px;*/
 }
@@ -67,7 +93,7 @@ html, body {
 
 
 
-.test-container::-webkit-scrollbar {
+.posted-comments-container::-webkit-scrollbar {
     width: 12px;
     margin-right: 5px;
 
@@ -78,7 +104,7 @@ html, body {
 /*    border-radius: 10px; */
 /*}*/
 
-.test-container::-webkit-scrollbar-thumb {
+.posted-comments-container::-webkit-scrollbar-thumb {
     background-color: #888; /* Scrollbar color */
     border-radius: 10px;
     border: 2px solid #333; /* Optional: space around scrollbar thumb */
@@ -196,19 +222,17 @@ html, body {
     width: 100%;
 
     padding-bottom: 5px;
-    /*border-top: 2px solid black;*/
-    /*border: 2px solid grey;*/
+
     margin-top: 40px;
     margin-bottom: 60px;
 }
 
-.comment-username {
-    /*margin: 10px 20px 0 20px;*/
+.comment-username,
+.comment-date {
+    margin-left: 10px;
 }
 
-.comment-date {
-    /*margin: 10px 20px 0px 20px;*/
-}
+
 
 .comment-box {
     /*border: 2px solid blue;*/
@@ -336,4 +360,15 @@ html, body {
     width: 150px;
     margin-left: 20px;
 
+}
+
+.no-comments-yet {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    color: white;
+    font-size: larger;
+    border: 2px solid white;
+    padding: 100px;
 }

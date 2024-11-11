@@ -4,7 +4,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100vw;
+    width: auto;
 
 }
 
@@ -82,11 +82,11 @@
 .user-information-container {
     width: 250px;
     height: 500px;
-    background-color: lightgreen;
+    background-color: white;
     padding: 20px;
     margin-left: 200px;
     margin-top: 50px;
-    position: fixed;
+    /*position: fixed;*/
 
 }
 

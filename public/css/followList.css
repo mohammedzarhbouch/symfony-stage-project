@@ -60,3 +60,10 @@
     cursor: pointer;
     background-color: #5eb5e0;
 }
+
+.nothing-message {
+    color: white;
+    font-size: larger;
+    border: 2px solid white;
+    padding: 100px;
+}

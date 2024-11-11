@@ -84,8 +84,8 @@ class Posts
             'ratings' => $this->ratings,
             'total_rating_score' => $this->total_rating_score,
             'average_rating' => $this->averageRating(),
-            'total_likes' => $this->total_likes,
-            'total-views' => $this->total_views,
+            'totalLikes' => $this->total_likes,
+            'totalViews' => $this->total_views,
 
         ];
     }

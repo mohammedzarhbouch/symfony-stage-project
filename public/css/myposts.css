@@ -13,8 +13,9 @@
 .myposts-container {
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Change to flex-start to align at the top */
-    flex-wrap: wrap; /* Allow items to wrap to the next row */
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 100px;
 }
 
 .myposts-main {
@@ -53,8 +54,6 @@
     justify-content: center;
     width: 100%;
 
-
-
 }
 
 
@@ -87,4 +86,22 @@
     padding: 5px;
     text-decoration: underline;
     margin-right: 15px;
+}
+
+.no-posts-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.no-posts-yet {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    color: white;
+    font-size: larger;
+    border: 2px solid white;
+    padding: 100px;
 }

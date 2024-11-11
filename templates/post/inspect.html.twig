@@ -8,6 +8,12 @@
 
 <div class="inspect-container">
     <div class="inspect-post-container">
+
+        <a class="inspect-back-button" href="{{ path('post-page') }}"> BACK </a>
+
+
+
+
         <div class="inspect-post">
 
             <div class="title-data">{{ post.title }}</div>
@@ -24,8 +30,12 @@
                     <i class="fa-regular fa-heart"></i>
                 </a>
                 <div class="total-likes">{{ post.totalLikes}}</div>
-            </div>
 
+                <div class="views">
+                    <i class="fa-regular fa-eye"></i>
+                    {{ post.totalViews }}
+                </div>
+            </div>
 
             {% set userRating = 0 %}
 
@@ -84,7 +94,7 @@
             </form>
 
         </div>
-        <div class="test-container">
+        <div class="posted-comments-container">
             {% if post.comments is empty %}
                 <p>No comments yet.</p>
             {% else %}

@@ -5,16 +5,16 @@
 
 
     <div class="follow-container">
+        {% if followedList is not empty %}
             {%  for followed in followedList %}
 
             <a href="{{ path('followedPosts', {'id': followed.followedUser.id}) }}" class="click">
                 <div class="follow-text">
                     <span class="following">Username: {{ followed.followedUser.username }}</span>
-                    <span class="following" >Posts: {{ followed.followedUser.postCount }}</span>
                 </div>
 
                 <div class="follow-profile-picture">
-                    {% if app.user.imageFileName is not null %}
+                    {% if followed.followedUser.imageFileName is not null %}
                         <img src="{{ asset(followed.followedUser.imagePath) }}" alt="Profile Picture">
                     {% else %}
                         <img src="{{ asset('uploads/profile_image/default.jpg') }}" alt="default picture">
@@ -24,7 +24,8 @@
             </a>
 
             {%  endfor%}
-
-
+        {% else %}
+            <div class="nothing-message"> You haven't followed anyone yet!</div>
+{% endif %}
     </div>
 {% endblock %}

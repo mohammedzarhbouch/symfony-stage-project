@@ -103,7 +103,7 @@ function addButtonListener() {
 
 
 
-// return the searched post and render them :)
+// return the searched post and render them :)text-decoration: none;
 function renderPosts(posts, userRatings) {
     const postsContainer = document.getElementById('posts-container');
 
@@ -137,7 +137,14 @@ function renderPosts(posts, userRatings) {
                 <a class="like" href="{{ path('like-post', {'id': post.id}) }}" data-like-state="${isLiked ? 'true' : 'false'}">
                     <i class="${isLiked ? 'fa-solid fa-heart' : 'fa-regular fa-heart'}"></i>
                 </a>
-                <div class="total-likes">${post.total_likes}</div>
+                <div class="total-likes">${post.totalLikes}</div>
+                
+                <div class="views">
+                    <i class="fa-regular fa-eye"></i>
+                    ${post.totalViews}
+                </div>
+                
+                
             </div>
             <a class="rating-text">Rate this post!</a>
             <div class="ratings" data-user-rating="${userRating}">
